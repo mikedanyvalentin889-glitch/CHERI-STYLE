@@ -231,18 +231,6 @@
             clip-path: polygon(0 0, 100% 0, 100% 70%, 85% 100%, 0 100%);
         }
         
-        /* Image loading */
-        .img-loading {
-            background: linear-gradient(90deg, var(--surface) 25%, var(--surface-light) 50%, var(--surface) 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-        }
-        
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-        
         /* Image hover zoom */
         .img-zoom {
             transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
@@ -566,16 +554,18 @@
                     </div>
                 </div>
                 
-                <!-- Product 2: Maillot Édition -->
-                <div class="product-card shine glass rounded-3xl overflow-hidden group reveal" data-category="maillot" data-name="Maillot Édition Limitée" data-price="3500" data-image="https://i.postimg.cc/placeholder-maillot.jpg">
+                <!-- Product 2: Maillot Design (NOUVELLE IMAGE) -->
+                <div class="product-card shine glass rounded-3xl overflow-hidden group reveal" data-category="maillot" data-name="Maillot Design Exclusif" data-price="3500" data-image="https://i.postimg.cc/mkXJP4XB/maillot-design.jpg">
                     <div class="relative h-80 overflow-hidden">
-                        <img src="https://i.postimg.cc/placeholder-maillot.jpg" 
-                             alt="Maillot Édition Limitée" 
+                        <img src="https://i.postimg.cc/mkXJP4XB/maillot-design.jpg" 
+                             alt="Maillot Design Exclusif" 
                              class="w-full h-full object-cover img-zoom"
-                             loading="lazy"
-                             onerror="this.src='https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&auto=format&fit=crop'">
+                             loading="lazy">
                         <div class="absolute top-4 right-4 price-tag px-4 py-2 text-white font-bold text-sm">
                             3,500 HTG
+                        </div>
+                        <div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-purple-500/80 text-white text-xs font-bold">
+                            Édition Limitée
                         </div>
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
                             <button onclick="addToCart(this)" class="w-full py-3 rounded-xl bg-white text-black font-semibold hover:bg-sky-400 transition-colors flex items-center justify-center gap-2">
@@ -586,14 +576,14 @@
                     </div>
                     <div class="p-6">
                         <div class="flex items-center gap-2 mb-2">
-                            <span class="px-2 py-1 rounded-md bg-purple-500/20 text-purple-400 text-xs font-medium">Édition Limitée</span>
+                            <span class="px-2 py-1 rounded-md bg-purple-500/20 text-purple-400 text-xs font-medium">Exclusif</span>
                             <div class="flex items-center gap-1">
                                 <i data-lucide="star" class="w-3 h-3 text-yellow-400 fill-yellow-400"></i>
                                 <span class="text-xs text-gray-400">4.8</span>
                             </div>
                         </div>
-                        <h3 class="font-semibold text-lg mb-1">Maillot Édition Limitée</h3>
-                        <p class="text-sm text-gray-500 mb-4">Design exclusif, matière premium respirante</p>
+                        <h3 class="font-semibold text-lg mb-1">Maillot Design Exclusif</h3>
+                        <p class="text-sm text-gray-500 mb-4">Design unique, matière premium respirante, coupe moderne</p>
                         <div class="flex items-center justify-between">
                             <div class="flex gap-2">
                                 <span class="w-6 h-6 rounded-full bg-black border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
@@ -678,7 +668,7 @@
                         <div class="flex items-center justify-between">
                             <div class="flex gap-2">
                                 <span class="w-6 h-6 rounded-full bg-black border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
-                                <span class="w-6 h-6 rounded-full bg-brown-600 border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform" style="background:#8B4513"></span>
+                                <span class="w-6 h-6 rounded-full bg-amber-800 border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
                             </div>
                             <span class="text-sky-400 text-sm font-medium">En stock</span>
                         </div>
