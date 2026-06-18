@@ -3,14 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHERI STYLE - Mode & Vêtements</title>
+    <title>CHERI STYLE - Mode & Vêtements | Haïti</title>
+    <meta name="description" content="CHERI STYLE - Votre boutique de mode en Haïti. Maillots, T-Shirts, Chaussures et Accessoires de qualité. Livraison rapide partout en Haïti.">
+    <meta name="keywords" content="CHERI STYLE, vetements Haiti, maillot, mode, boutique, Delmas 31">
+    <meta name="author" content="CHERI STYLE">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="CHERI STYLE - Mode & Vêtements">
+    <meta property="og:description" content="Votre destination mode en Haïti. Qualité, style et authenticité.">
+    <meta property="og:image" content="https://i.postimg.cc/7NW685PJ/snapback-luxe-haiti.jpg">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    
     <style>
         :root {
             --primary: #0ea5e9;
@@ -28,11 +46,16 @@
             box-sizing: border-box;
         }
         
+        html {
+            scroll-behavior: smooth;
+        }
+        
         body {
             font-family: 'Outfit', sans-serif;
             background: var(--darker);
             color: #e2e8f0;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
         
         .font-display {
@@ -170,31 +193,6 @@
             left: 100%;
         }
         
-        /* Loader */
-        .loader {
-            border: 3px solid rgba(14, 165, 233, 0.1);
-            border-top: 3px solid var(--primary);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Particle */
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--primary);
-            border-radius: 50%;
-            opacity: 0.6;
-            pointer-events: none;
-        }
-        
         /* Magnetic button */
         .magnetic-btn {
             transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
@@ -232,12 +230,115 @@
             background: linear-gradient(135deg, var(--primary), var(--accent));
             clip-path: polygon(0 0, 100% 0, 100% 70%, 85% 100%, 0 100%);
         }
+        
+        /* Image loading */
+        .img-loading {
+            background: linear-gradient(90deg, var(--surface) 25%, var(--surface-light) 50%, var(--surface) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        /* Image hover zoom */
+        .img-zoom {
+            transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .group:hover .img-zoom {
+            transform: scale(1.1);
+        }
+        
+        /* Notification toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 16px 24px;
+            border-radius: 16px;
+            background: var(--surface);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            color: white;
+            font-weight: 500;
+            z-index: 9999;
+            transform: translateX(400px);
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            backdrop-filter: blur(20px);
+        }
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        /* Cart sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            max-width: 100vw;
+            height: 100vh;
+            background: var(--darker);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            transition: right 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow-y: auto;
+        }
+        .cart-sidebar.open {
+            right: 0;
+        }
+        .cart-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .cart-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cursor-dot { display: none; }
+        }
     </style>
 </head>
 <body class="mesh-gradient">
 
     <!-- Custom Cursor -->
     <div class="cursor-dot hidden md:block" id="cursor"></div>
+
+    <!-- Cart Overlay -->
+    <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+    
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="font-display text-2xl font-bold">Votre Panier</h2>
+                <button onclick="toggleCart()" class="p-2 rounded-xl hover:bg-white/10 transition-colors">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div id="cart-items" class="space-y-4">
+                <!-- Cart items will be injected here -->
+            </div>
+            <div class="mt-8 pt-6 border-t border-white/10">
+                <div class="flex justify-between mb-4">
+                    <span class="text-gray-400">Total</span>
+                    <span class="font-bold text-xl" id="cart-total">0 HTG</span>
+                </div>
+                <button onclick="checkout()" class="w-full py-4 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-semibold hover:scale-[1.02] transition-transform">
+                    Commander par WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Navigation -->
     <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-500">
@@ -260,9 +361,9 @@
                 </div>
                 
                 <div class="flex items-center gap-4">
-                    <button class="relative p-2 rounded-xl hover:bg-white/5 transition-colors">
+                    <button onclick="toggleCart()" class="relative p-2 rounded-xl hover:bg-white/5 transition-colors">
                         <i data-lucide="shopping-bag" class="w-5 h-5 text-gray-300"></i>
-                        <span class="absolute -top-1 -right-1 w-5 h-5 bg-sky-500 rounded-full text-xs flex items-center justify-center font-bold">3</span>
+                        <span id="cart-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-sky-500 rounded-full text-xs flex items-center justify-center font-bold">0</span>
                     </button>
                     <button class="md:hidden p-2 rounded-xl hover:bg-white/5 transition-colors" onclick="toggleMenu()">
                         <i data-lucide="menu" class="w-5 h-5 text-gray-300"></i>
@@ -304,24 +405,24 @@
                 </p>
                 
                 <div class="flex flex-wrap gap-4">
-                    <button class="magnetic-btn px-8 py-4 rounded-2xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-semibold glow-blue hover:scale-105 transition-transform flex items-center gap-2">
+                    <a href="#produits" class="magnetic-btn px-8 py-4 rounded-2xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-semibold glow-blue hover:scale-105 transition-transform flex items-center gap-2">
                         <span>Voir la Collection</span>
                         <i data-lucide="arrow-right" class="w-5 h-5"></i>
-                    </button>
-                    <button class="magnetic-btn px-8 py-4 rounded-2xl glass text-white font-semibold hover:bg-white/10 transition-colors flex items-center gap-2">
-                        <i data-lucide="play-circle" class="w-5 h-5"></i>
-                        <span>Notre Histoire</span>
-                    </button>
+                    </a>
+                    <a href="#contact" class="magnetic-btn px-8 py-4 rounded-2xl glass text-white font-semibold hover:bg-white/10 transition-colors flex items-center gap-2">
+                        <i data-lucide="phone" class="w-5 h-5"></i>
+                        <span>Nous Contacter</span>
+                    </a>
                 </div>
                 
                 <div class="flex items-center gap-8 pt-4">
                     <div>
-                        <div class="font-display text-3xl font-bold gradient-text">2,500+</div>
+                        <div class="font-display text-3xl font-bold gradient-text counter" data-target="2500">0</div>
                         <div class="text-sm text-gray-500">Clients Satisfaits</div>
                     </div>
                     <div class="w-px h-12 bg-gray-800"></div>
                     <div>
-                        <div class="font-display text-3xl font-bold gradient-text">500+</div>
+                        <div class="font-display text-3xl font-bold gradient-text counter" data-target="500">0</div>
                         <div class="text-sm text-gray-500">Produits Disponibles</div>
                     </div>
                     <div class="w-px h-12 bg-gray-800"></div>
@@ -336,10 +437,10 @@
                 <div class="absolute inset-0 bg-gradient-to-r from-sky-500/20 to-indigo-500/20 rounded-full blur-3xl"></div>
                 <div class="relative float">
                     <div class="glass-strong rounded-3xl p-2 glow-blue">
-                        <img src="https://i.postimg.cc/placeholder-hero.jpg" 
+                        <img src="https://i.postimg.cc/7NW685PJ/snapback-luxe-haiti.jpg" 
                              alt="Collection CHERI STYLE" 
                              class="rounded-2xl w-full h-[500px] object-cover"
-                             onerror="this.src='https://images.unsplash.com/photo-1556906781-9a412961c28c?w=800&auto=format&fit=crop'">
+                             loading="eager">
                         <div class="absolute -bottom-6 -left-6 glass-strong rounded-2xl p-4 glow-blue">
                             <div class="flex items-center gap-3">
                                 <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-400 to-indigo-500 flex items-center justify-center">
@@ -347,7 +448,7 @@
                                 </div>
                                 <div>
                                     <div class="text-sm font-bold">Meilleure Vente</div>
-                                    <div class="text-xs text-gray-400">Maillot Édition Limitée</div>
+                                    <div class="text-xs text-gray-400">Snapback Premium</div>
                                 </div>
                             </div>
                         </div>
@@ -370,7 +471,15 @@
             </div>
             
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div class="card-3d glass rounded-2xl p-6 text-center cursor-pointer hover:border-sky-500/30 transition-all group reveal">
+                <div class="card-3d glass rounded-2xl p-6 text-center cursor-pointer hover:border-sky-500/30 transition-all group reveal" onclick="filterProducts('all')">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-sky-500/20 to-indigo-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i data-lucide="layout-grid" class="w-8 h-8 text-sky-400"></i>
+                    </div>
+                    <h3 class="font-semibold mb-1">Tous</h3>
+                    <p class="text-sm text-gray-500">Tous les produits</p>
+                </div>
+                
+                <div class="card-3d glass rounded-2xl p-6 text-center cursor-pointer hover:border-sky-500/30 transition-all group reveal" onclick="filterProducts('maillot')">
                     <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-sky-500/20 to-indigo-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                         <i data-lucide="shirt" class="w-8 h-8 text-sky-400"></i>
                     </div>
@@ -378,7 +487,7 @@
                     <p class="text-sm text-gray-500">128 produits</p>
                 </div>
                 
-                <div class="card-3d glass rounded-2xl p-6 text-center cursor-pointer hover:border-sky-500/30 transition-all group reveal">
+                <div class="card-3d glass rounded-2xl p-6 text-center cursor-pointer hover:border-sky-500/30 transition-all group reveal" onclick="filterProducts('chaussure')">
                     <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                         <i data-lucide="footprints" class="w-8 h-8 text-indigo-400"></i>
                     </div>
@@ -386,20 +495,12 @@
                     <p class="text-sm text-gray-500">86 produits</p>
                 </div>
                 
-                <div class="card-3d glass rounded-2xl p-6 text-center cursor-pointer hover:border-sky-500/30 transition-all group reveal">
+                <div class="card-3d glass rounded-2xl p-6 text-center cursor-pointer hover:border-sky-500/30 transition-all group reveal" onclick="filterProducts('accessoire')">
                     <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                         <i data-lucide="crown" class="w-8 h-8 text-purple-400"></i>
                     </div>
                     <h3 class="font-semibold mb-1">Accessoires</h3>
                     <p class="text-sm text-gray-500">214 produits</p>
-                </div>
-                
-                <div class="card-3d glass rounded-2xl p-6 text-center cursor-pointer hover:border-sky-500/30 transition-all group reveal">
-                    <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-pink-500/20 to-rose-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <i data-lucide="sparkles" class="w-8 h-8 text-pink-400"></i>
-                    </div>
-                    <h3 class="font-semibold mb-1">Nouveautés</h3>
-                    <p class="text-sm text-gray-500">45 produits</p>
                 </div>
             </div>
         </div>
@@ -414,27 +515,31 @@
                     <p class="text-gray-400">Sélection premium de notre catalogue</p>
                 </div>
                 
-                <div class="flex gap-2 overflow-x-auto pb-2">
-                    <button class="px-6 py-2 rounded-full bg-sky-500 text-white text-sm font-medium whitespace-nowrap">Tous</button>
-                    <button class="px-6 py-2 rounded-full glass text-gray-300 text-sm font-medium hover:bg-white/10 whitespace-nowrap transition-colors">Maillots</button>
-                    <button class="px-6 py-2 rounded-full glass text-gray-300 text-sm font-medium hover:bg-white/10 whitespace-nowrap transition-colors">T-Shirts</button>
-                    <button class="px-6 py-2 rounded-full glass text-gray-300 text-sm font-medium hover:bg-white/10 whitespace-nowrap transition-colors">Chaussures</button>
+                <div class="flex gap-2 overflow-x-auto pb-2" id="filter-buttons">
+                    <button onclick="filterProducts('all')" class="filter-btn px-6 py-2 rounded-full bg-sky-500 text-white text-sm font-medium whitespace-nowrap transition-all" data-filter="all">Tous</button>
+                    <button onclick="filterProducts('maillot')" class="filter-btn px-6 py-2 rounded-full glass text-gray-300 text-sm font-medium hover:bg-white/10 whitespace-nowrap transition-all" data-filter="maillot">Maillots</button>
+                    <button onclick="filterProducts('tshirt')" class="filter-btn px-6 py-2 rounded-full glass text-gray-300 text-sm font-medium hover:bg-white/10 whitespace-nowrap transition-all" data-filter="tshirt">T-Shirts</button>
+                    <button onclick="filterProducts('chaussure')" class="filter-btn px-6 py-2 rounded-full glass text-gray-300 text-sm font-medium hover:bg-white/10 whitespace-nowrap transition-all" data-filter="chaussure">Chaussures</button>
+                    <button onclick="filterProducts('accessoire')" class="filter-btn px-6 py-2 rounded-full glass text-gray-300 text-sm font-medium hover:bg-white/10 whitespace-nowrap transition-all" data-filter="accessoire">Accessoires</button>
                 </div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Product 1 -->
-                <div class="shine glass rounded-3xl overflow-hidden group reveal">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="products-grid">
+                <!-- Product 1: Snapback NY -->
+                <div class="product-card shine glass rounded-3xl overflow-hidden group reveal" data-category="accessoire" data-name="Snapback NY Premium" data-price="2500" data-image="https://i.postimg.cc/7NW685PJ/snapback-luxe-haiti.jpg">
                     <div class="relative h-80 overflow-hidden">
-                        <img src="https://i.postimg.cc/maillot-1.jpg" 
-                             alt="Maillot Premium" 
-                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                             onerror="this.src='https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&auto=format&fit=crop'">
+                        <img src="https://i.postimg.cc/7NW685PJ/snapback-luxe-haiti.jpg" 
+                             alt="Snapback NY Premium" 
+                             class="w-full h-full object-cover img-zoom"
+                             loading="lazy">
                         <div class="absolute top-4 right-4 price-tag px-4 py-2 text-white font-bold text-sm">
                             2,500 HTG
                         </div>
+                        <div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-sky-500/80 text-white text-xs font-bold">
+                            Best-seller
+                        </div>
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                            <button class="w-full py-3 rounded-xl bg-white text-black font-semibold hover:bg-sky-400 transition-colors flex items-center justify-center gap-2">
+                            <button onclick="addToCart(this)" class="w-full py-3 rounded-xl bg-white text-black font-semibold hover:bg-sky-400 transition-colors flex items-center justify-center gap-2">
                                 <i data-lucide="shopping-cart" class="w-4 h-4"></i>
                                 Ajouter au Panier
                             </button>
@@ -443,6 +548,45 @@
                     <div class="p-6">
                         <div class="flex items-center gap-2 mb-2">
                             <span class="px-2 py-1 rounded-md bg-sky-500/20 text-sky-400 text-xs font-medium">Nouveau</span>
+                            <div class="flex items-center gap-1">
+                                <i data-lucide="star" class="w-3 h-3 text-yellow-400 fill-yellow-400"></i>
+                                <span class="text-xs text-gray-400">4.9</span>
+                            </div>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-1">Snapback NY Premium</h3>
+                        <p class="text-sm text-gray-500 mb-4">Broderie 3D premium, ajustable, style urbain</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex gap-2">
+                                <span class="w-6 h-6 rounded-full bg-black border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
+                                <span class="w-6 h-6 rounded-full bg-blue-900 border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
+                                <span class="w-6 h-6 rounded-full bg-red-600 border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
+                            </div>
+                            <span class="text-sky-400 text-sm font-medium">En stock</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 2: Maillot Édition -->
+                <div class="product-card shine glass rounded-3xl overflow-hidden group reveal" data-category="maillot" data-name="Maillot Édition Limitée" data-price="3500" data-image="https://i.postimg.cc/placeholder-maillot.jpg">
+                    <div class="relative h-80 overflow-hidden">
+                        <img src="https://i.postimg.cc/placeholder-maillot.jpg" 
+                             alt="Maillot Édition Limitée" 
+                             class="w-full h-full object-cover img-zoom"
+                             loading="lazy"
+                             onerror="this.src='https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&auto=format&fit=crop'">
+                        <div class="absolute top-4 right-4 price-tag px-4 py-2 text-white font-bold text-sm">
+                            3,500 HTG
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                            <button onclick="addToCart(this)" class="w-full py-3 rounded-xl bg-white text-black font-semibold hover:bg-sky-400 transition-colors flex items-center justify-center gap-2">
+                                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                                Ajouter au Panier
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="px-2 py-1 rounded-md bg-purple-500/20 text-purple-400 text-xs font-medium">Édition Limitée</span>
                             <div class="flex items-center gap-1">
                                 <i data-lucide="star" class="w-3 h-3 text-yellow-400 fill-yellow-400"></i>
                                 <span class="text-xs text-gray-400">4.8</span>
@@ -454,19 +598,20 @@
                             <div class="flex gap-2">
                                 <span class="w-6 h-6 rounded-full bg-black border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
                                 <span class="w-6 h-6 rounded-full bg-blue-600 border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
-                                <span class="w-6 h-6 rounded-full bg-red-500 border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
+                                <span class="w-6 h-6 rounded-full bg-white border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
                             </div>
-                            <span class="text-sky-400 text-sm font-medium">En stock</span>
+                            <span class="text-yellow-400 text-sm font-medium">Plus que 5</span>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Product 2 -->
-                <div class="shine glass rounded-3xl overflow-hidden group reveal">
+                <!-- Product 3: T-Shirt Streetwear -->
+                <div class="product-card shine glass rounded-3xl overflow-hidden group reveal" data-category="tshirt" data-name="T-Shirt Streetwear Premium" data-price="1800" data-image="https://i.postimg.cc/placeholder-tshirt.jpg">
                     <div class="relative h-80 overflow-hidden">
-                        <img src="https://i.postimg.cc/maillot-2.jpg" 
-                             alt="T-Shirt Streetwear" 
-                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        <img src="https://i.postimg.cc/placeholder-tshirt.jpg" 
+                             alt="T-Shirt Streetwear Premium" 
+                             class="w-full h-full object-cover img-zoom"
+                             loading="lazy"
                              onerror="this.src='https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&auto=format&fit=crop'">
                         <div class="absolute top-4 right-4 price-tag px-4 py-2 text-white font-bold text-sm">
                             1,800 HTG
@@ -475,7 +620,7 @@
                             -20%
                         </div>
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                            <button class="w-full py-3 rounded-xl bg-white text-black font-semibold hover:bg-sky-400 transition-colors flex items-center justify-center gap-2">
+                            <button onclick="addToCart(this)" class="w-full py-3 rounded-xl bg-white text-black font-semibold hover:bg-sky-400 transition-colors flex items-center justify-center gap-2">
                                 <i data-lucide="shopping-cart" class="w-4 h-4"></i>
                                 Ajouter au Panier
                             </button>
@@ -495,99 +640,26 @@
                             <div class="flex gap-2">
                                 <span class="w-6 h-6 rounded-full bg-white border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
                                 <span class="w-6 h-6 rounded-full bg-gray-800 border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
+                                <span class="w-6 h-6 rounded-full bg-black border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
                             </div>
                             <span class="text-sky-400 text-sm font-medium">En stock</span>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Product 3 -->
-                <div class="shine glass rounded-3xl overflow-hidden group reveal">
+                <!-- Product 4: Sandales -->
+                <div class="product-card shine glass rounded-3xl overflow-hidden group reveal" data-category="chaussure" data-name="Sandales Comfort Pro" data-price="1500" data-image="https://i.postimg.cc/placeholder-sandales.jpg">
                     <div class="relative h-80 overflow-hidden">
-                        <img src="https://i.postimg.cc/chaussures-1.jpg" 
-                             alt="Sneakers Urban" 
-                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        <img src="https://i.postimg.cc/placeholder-sandales.jpg" 
+                             alt="Sandales Comfort Pro" 
+                             class="w-full h-full object-cover img-zoom"
+                             loading="lazy"
                              onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop'">
-                        <div class="absolute top-4 right-4 price-tag px-4 py-2 text-white font-bold text-sm">
-                            4,500 HTG
-                        </div>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                            <button class="w-full py-3 rounded-xl bg-white text-black font-semibold hover:bg-sky-400 transition-colors flex items-center justify-center gap-2">
-                                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
-                                Ajouter au Panier
-                            </button>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="px-2 py-1 rounded-md bg-purple-500/20 text-purple-400 text-xs font-medium">Best-seller</span>
-                            <div class="flex items-center gap-1">
-                                <i data-lucide="star" class="w-3 h-3 text-yellow-400 fill-yellow-400"></i>
-                                <span class="text-xs text-gray-400">4.9</span>
-                            </div>
-                        </div>
-                        <h3 class="font-semibold text-lg mb-1">Sneakers Urban Elite</h3>
-                        <p class="text-sm text-gray-500 mb-4">Confort maximal, design futuriste</p>
-                        <div class="flex items-center justify-between">
-                            <div class="flex gap-2">
-                                <span class="w-6 h-6 rounded-full bg-black border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
-                                <span class="w-6 h-6 rounded-full bg-white border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
-                            </div>
-                            <span class="text-yellow-400 text-sm font-medium">Plus que 3</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Product 4 -->
-                <div class="shine glass rounded-3xl overflow-hidden group reveal">
-                    <div class="relative h-80 overflow-hidden">
-                        <img src="https://i.postimg.cc/casquette-1.jpg" 
-                             alt="Casquette Snapback" 
-                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                             onerror="this.src='https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600&auto=format&fit=crop'">
-                        <div class="absolute top-4 right-4 price-tag px-4 py-2 text-white font-bold text-sm">
-                            2,500 HTG
-                        </div>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                            <button class="w-full py-3 rounded-xl bg-white text-black font-semibold hover:bg-sky-400 transition-colors flex items-center justify-center gap-2">
-                                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
-                                Ajouter au Panier
-                            </button>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="px-2 py-1 rounded-md bg-sky-500/20 text-sky-400 text-xs font-medium">Nouveau</span>
-                            <div class="flex items-center gap-1">
-                                <i data-lucide="star" class="w-3 h-3 text-yellow-400 fill-yellow-400"></i>
-                                <span class="text-xs text-gray-400">4.7</span>
-                            </div>
-                        </div>
-                        <h3 class="font-semibold text-lg mb-1">Casquette Snapback NY</h3>
-                        <p class="text-sm text-gray-500 mb-4">Broderie premium, ajustable, style urbain</p>
-                        <div class="flex items-center justify-between">
-                            <div class="flex gap-2">
-                                <span class="w-6 h-6 rounded-full bg-black border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
-                                <span class="w-6 h-6 rounded-full bg-blue-900 border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
-                                <span class="w-6 h-6 rounded-full bg-red-600 border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
-                            </div>
-                            <span class="text-sky-400 text-sm font-medium">En stock</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Product 5 -->
-                <div class="shine glass rounded-3xl overflow-hidden group reveal">
-                    <div class="relative h-80 overflow-hidden">
-                        <img src="https://i.postimg.cc/short-1.jpg" 
-                             alt="Short Sport" 
-                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                             onerror="this.src='https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=600&auto=format&fit=crop'">
                         <div class="absolute top-4 right-4 price-tag px-4 py-2 text-white font-bold text-sm">
                             1,500 HTG
                         </div>
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                            <button class="w-full py-3 rounded-xl bg-white text-black font-semibold hover:bg-sky-400 transition-colors flex items-center justify-center gap-2">
+                            <button onclick="addToCart(this)" class="w-full py-3 rounded-xl bg-white text-black font-semibold hover:bg-sky-400 transition-colors flex items-center justify-center gap-2">
                                 <i data-lucide="shopping-cart" class="w-4 h-4"></i>
                                 Ajouter au Panier
                             </button>
@@ -596,6 +668,44 @@
                     <div class="p-6">
                         <div class="flex items-center gap-2 mb-2">
                             <span class="px-2 py-1 rounded-md bg-green-500/20 text-green-400 text-xs font-medium">Populaire</span>
+                            <div class="flex items-center gap-1">
+                                <i data-lucide="star" class="w-3 h-3 text-yellow-400 fill-yellow-400"></i>
+                                <span class="text-xs text-gray-400">4.7</span>
+                            </div>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-1">Sandales Comfort Pro</h3>
+                        <p class="text-sm text-gray-500 mb-4">Semelle antidérapante, confort maximal</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex gap-2">
+                                <span class="w-6 h-6 rounded-full bg-black border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
+                                <span class="w-6 h-6 rounded-full bg-brown-600 border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform" style="background:#8B4513"></span>
+                            </div>
+                            <span class="text-sky-400 text-sm font-medium">En stock</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 5: Short Sport -->
+                <div class="product-card shine glass rounded-3xl overflow-hidden group reveal" data-category="maillot" data-name="Short Sport Pro" data-price="1500" data-image="https://i.postimg.cc/placeholder-short.jpg">
+                    <div class="relative h-80 overflow-hidden">
+                        <img src="https://i.postimg.cc/placeholder-short.jpg" 
+                             alt="Short Sport Pro" 
+                             class="w-full h-full object-cover img-zoom"
+                             loading="lazy"
+                             onerror="this.src='https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=600&auto=format&fit=crop'">
+                        <div class="absolute top-4 right-4 price-tag px-4 py-2 text-white font-bold text-sm">
+                            1,500 HTG
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                            <button onclick="addToCart(this)" class="w-full py-3 rounded-xl bg-white text-black font-semibold hover:bg-sky-400 transition-colors flex items-center justify-center gap-2">
+                                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                                Ajouter au Panier
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="px-2 py-1 rounded-md bg-green-500/20 text-green-400 text-xs font-medium">Sport</span>
                             <div class="flex items-center gap-1">
                                 <i data-lucide="star" class="w-3 h-3 text-yellow-400 fill-yellow-400"></i>
                                 <span class="text-xs text-gray-400">4.5</span>
@@ -607,18 +717,20 @@
                             <div class="flex gap-2">
                                 <span class="w-6 h-6 rounded-full bg-black border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
                                 <span class="w-6 h-6 rounded-full bg-gray-600 border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
+                                <span class="w-6 h-6 rounded-full bg-blue-600 border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
                             </div>
                             <span class="text-sky-400 text-sm font-medium">En stock</span>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Product 6 -->
-                <div class="shine glass rounded-3xl overflow-hidden group reveal">
+                <!-- Product 6: Ensemble Complet -->
+                <div class="product-card shine glass rounded-3xl overflow-hidden group reveal" data-category="maillot" data-name="Ensemble Complet Urban" data-price="6500" data-image="https://i.postimg.cc/placeholder-ensemble.jpg">
                     <div class="relative h-80 overflow-hidden">
-                        <img src="https://i.postimg.cc/ensemble-1.jpg" 
-                             alt="Ensemble Complet" 
-                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        <img src="https://i.postimg.cc/placeholder-ensemble.jpg" 
+                             alt="Ensemble Complet Urban" 
+                             class="w-full h-full object-cover img-zoom"
+                             loading="lazy"
                              onerror="this.src='https://images.unsplash.com/photo-1617137968427-85924c800a22?w=600&auto=format&fit=crop'">
                         <div class="absolute top-4 right-4 price-tag px-4 py-2 text-white font-bold text-sm">
                             6,500 HTG
@@ -627,7 +739,7 @@
                             Pack
                         </div>
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                            <button class="w-full py-3 rounded-xl bg-white text-black font-semibold hover:bg-sky-400 transition-colors flex items-center justify-center gap-2">
+                            <button onclick="addToCart(this)" class="w-full py-3 rounded-xl bg-white text-black font-semibold hover:bg-sky-400 transition-colors flex items-center justify-center gap-2">
                                 <i data-lucide="shopping-cart" class="w-4 h-4"></i>
                                 Ajouter au Panier
                             </button>
@@ -652,13 +764,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="text-center mt-12">
-                <button class="magnetic-btn px-8 py-4 rounded-2xl glass text-white font-semibold hover:bg-white/10 transition-colors inline-flex items-center gap-2">
-                    <span>Voir Tous les Produits</span>
-                    <i data-lucide="arrow-right" class="w-5 h-5"></i>
-                </button>
             </div>
         </div>
     </section>
@@ -689,7 +794,7 @@
                         <i data-lucide="headphones" class="w-8 h-8 text-purple-400"></i>
                     </div>
                     <h3 class="font-display text-xl font-bold mb-3">Support 24/7</h3>
-                    <p class="text-gray-400">Notre équipe est disponible jour et night pour répondre à toutes vos questions.</p>
+                    <p class="text-gray-400">Notre équipe est disponible jour et nuit pour répondre à toutes vos questions.</p>
                 </div>
             </div>
         </div>
@@ -707,7 +812,7 @@
                     <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
                         <input type="email" placeholder="Votre email" 
                                class="flex-1 px-6 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-sky-500 transition-colors">
-                        <button class="px-8 py-4 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-semibold hover:scale-105 transition-transform whitespace-nowrap">
+                        <button onclick="subscribe()" class="px-8 py-4 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-semibold hover:scale-105 transition-transform whitespace-nowrap">
                             S'inscrire
                         </button>
                     </div>
@@ -740,7 +845,7 @@
                                 <i data-lucide="phone" class="w-5 h-5 text-indigo-400"></i>
                             </div>
                             <div>
-                                <div class="font-semibold">Téléphone</div>
+                                <div class="font-semibold">Téléphone / WhatsApp</div>
                                 <div class="text-sm text-gray-400">+509 3895 4747</div>
                             </div>
                         </div>
@@ -767,37 +872,34 @@
                     </div>
                     
                     <div class="flex gap-4 mt-8">
-                        <a href="#" class="w-12 h-12 rounded-xl glass flex items-center justify-center hover:bg-sky-500/20 hover:border-sky-500/30 transition-all">
+                        <a href="https://instagram.com/cheristyle" target="_blank" class="w-12 h-12 rounded-xl glass flex items-center justify-center hover:bg-sky-500/20 hover:border-sky-500/30 transition-all">
                             <i data-lucide="instagram" class="w-5 h-5 text-gray-300"></i>
                         </a>
-                        <a href="#" class="w-12 h-12 rounded-xl glass flex items-center justify-center hover:bg-sky-500/20 hover:border-sky-500/30 transition-all">
+                        <a href="https://facebook.com/cheristyle" target="_blank" class="w-12 h-12 rounded-xl glass flex items-center justify-center hover:bg-sky-500/20 hover:border-sky-500/30 transition-all">
                             <i data-lucide="facebook" class="w-5 h-5 text-gray-300"></i>
                         </a>
-                        <a href="#" class="w-12 h-12 rounded-xl glass flex items-center justify-center hover:bg-sky-500/20 hover:border-sky-500/30 transition-all">
-                            <i data-lucide="twitter" class="w-5 h-5 text-gray-300"></i>
-                        </a>
-                        <a href="#" class="w-12 h-12 rounded-xl glass flex items-center justify-center hover:bg-sky-500/20 hover:border-sky-500/30 transition-all">
-                            <i data-lucide="whatsapp" class="w-5 h-5 text-gray-300"></i>
+                        <a href="https://wa.me/50938954747" target="_blank" class="w-12 h-12 rounded-xl glass flex items-center justify-center hover:bg-green-500/20 hover:border-green-500/30 transition-all">
+                            <i data-lucide="message-circle" class="w-5 h-5 text-gray-300"></i>
                         </a>
                     </div>
                 </div>
                 
                 <div class="glass rounded-3xl p-8 reveal">
-                    <form class="space-y-6" onsubmit="event.preventDefault(); alert('Message envoyé ! Nous vous contacterons sous peu.');">
+                    <form class="space-y-6" onsubmit="event.preventDefault(); sendMessage();">
                         <div class="grid sm:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-medium mb-2">Nom</label>
-                                <input type="text" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-sky-500 transition-colors" placeholder="Votre nom">
+                                <input type="text" id="contact-name" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-sky-500 transition-colors" placeholder="Votre nom">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium mb-2">Email</label>
-                                <input type="email" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-sky-500 transition-colors" placeholder="votre@email.com">
+                                <label class="block text-sm font-medium mb-2">Téléphone</label>
+                                <input type="tel" id="contact-phone" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-sky-500 transition-colors" placeholder="Votre numéro">
                             </div>
                         </div>
                         
                         <div>
                             <label class="block text-sm font-medium mb-2">Sujet</label>
-                            <select class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-sky-500 transition-colors">
+                            <select id="contact-subject" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-sky-500 transition-colors">
                                 <option class="bg-gray-900">Commande</option>
                                 <option class="bg-gray-900">Question produit</option>
                                 <option class="bg-gray-900">Livraison</option>
@@ -807,12 +909,12 @@
                         
                         <div>
                             <label class="block text-sm font-medium mb-2">Message</label>
-                            <textarea rows="4" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-sky-500 transition-colors resize-none" placeholder="Votre message..."></textarea>
+                            <textarea id="contact-message" rows="4" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-sky-500 transition-colors resize-none" placeholder="Votre message..."></textarea>
                         </div>
                         
                         <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-semibold hover:scale-[1.02] transition-transform flex items-center justify-center gap-2">
                             <i data-lucide="send" class="w-5 h-5"></i>
-                            <span>Envoyer le Message</span>
+                            <span>Envoyer par WhatsApp</span>
                         </button>
                     </form>
                 </div>
@@ -837,20 +939,20 @@
                 <div>
                     <h4 class="font-semibold mb-4">Produits</h4>
                     <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="#" class="hover:text-sky-400 transition-colors">Maillots</a></li>
-                        <li><a href="#" class="hover:text-sky-400 transition-colors">T-Shirts</a></li>
-                        <li><a href="#" class="hover:text-sky-400 transition-colors">Chaussures</a></li>
-                        <li><a href="#" class="hover:text-sky-400 transition-colors">Accessoires</a></li>
+                        <li><a href="#produits" onclick="filterProducts('maillot')" class="hover:text-sky-400 transition-colors">Maillots</a></li>
+                        <li><a href="#produits" onclick="filterProducts('tshirt')" class="hover:text-sky-400 transition-colors">T-Shirts</a></li>
+                        <li><a href="#produits" onclick="filterProducts('chaussure')" class="hover:text-sky-400 transition-colors">Chaussures</a></li>
+                        <li><a href="#produits" onclick="filterProducts('accessoire')" class="hover:text-sky-400 transition-colors">Accessoires</a></li>
                     </ul>
                 </div>
                 
                 <div>
                     <h4 class="font-semibold mb-4">Liens Rapides</h4>
                     <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="#" class="hover:text-sky-400 transition-colors">À Propos</a></li>
-                        <li><a href="#" class="hover:text-sky-400 transition-colors">Livraison</a></li>
-                        <li><a href="#" class="hover:text-sky-400 transition-colors">Retours</a></li>
-                        <li><a href="#" class="hover:text-sky-400 transition-colors">FAQ</a></li>
+                        <li><a href="#accueil" class="hover:text-sky-400 transition-colors">Accueil</a></li>
+                        <li><a href="#contact" class="hover:text-sky-400 transition-colors">Contact</a></li>
+                        <li><a href="#" onclick="alert('Livraison disponible partout en Haïti sous 24-48h')" class="hover:text-sky-400 transition-colors">Livraison</a></li>
+                        <li><a href="#" onclick="alert('Satisfait ou remboursé sous 7 jours')" class="hover:text-sky-400 transition-colors">Retours</a></li>
                     </ul>
                 </div>
                 
@@ -871,14 +973,192 @@
         </div>
     </footer>
 
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <div class="flex items-center gap-3">
+            <i data-lucide="check-circle" class="w-5 h-5 text-green-400"></i>
+            <span id="toast-message">Produit ajouté au panier !</span>
+        </div>
+    </div>
+
     <script>
         // Initialize Lucide icons
         lucide.createIcons();
+        
+        // Cart State
+        let cart = [];
         
         // Mobile menu toggle
         function toggleMenu() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
+        }
+        
+        // Cart toggle
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('open');
+            updateCartUI();
+        }
+        
+        // Add to cart
+        function addToCart(btn) {
+            const card = btn.closest('.product-card');
+            const name = card.dataset.name;
+            const price = parseInt(card.dataset.price);
+            const image = card.dataset.image;
+            const category = card.dataset.category;
+            
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({ name, price, image, category, quantity: 1 });
+            }
+            
+            updateCartBadge();
+            showToast(`${name} ajouté au panier !`);
+        }
+        
+        // Remove from cart
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+            updateCartBadge();
+        }
+        
+        // Update cart badge
+        function updateCartBadge() {
+            const badge = document.getElementById('cart-badge');
+            const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+            badge.textContent = total;
+            badge.style.display = total > 0 ? 'flex' : 'none';
+        }
+        
+        // Update cart UI
+        function updateCartUI() {
+            const container = document.getElementById('cart-items');
+            const totalEl = document.getElementById('cart-total');
+            
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-gray-500">
+                        <i data-lucide="shopping-bag" class="w-12 h-12 mx-auto mb-4 opacity-50"></i>
+                        <p>Votre panier est vide</p>
+                    </div>
+                `;
+                totalEl.textContent = '0 HTG';
+                lucide.createIcons();
+                return;
+            }
+            
+            let total = 0;
+            container.innerHTML = cart.map((item, index) => {
+                total += item.price * item.quantity;
+                return `
+                    <div class="flex gap-4 p-4 rounded-xl glass">
+                        <img src="${item.image}" alt="${item.name}" class="w-20 h-20 rounded-lg object-cover" onerror="this.src='https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=200&auto=format&fit=crop'">
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-sm">${item.name}</h4>
+                            <p class="text-xs text-gray-400">${item.price.toLocaleString()} HTG x ${item.quantity}</p>
+                            <p class="text-sm font-bold text-sky-400 mt-1">${(item.price * item.quantity).toLocaleString()} HTG</p>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="p-2 rounded-lg hover:bg-red-500/20 text-red-400 transition-colors self-start">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+            
+            totalEl.textContent = `${total.toLocaleString()} HTG`;
+            lucide.createIcons();
+        }
+        
+        // Checkout via WhatsApp
+        function checkout() {
+            if (cart.length === 0) {
+                showToast('Votre panier est vide !');
+                return;
+            }
+            
+            let message = '🛒 *Nouvelle Commande CHERI STYLE*%0A%0A';
+            let total = 0;
+            
+            cart.forEach((item, i) => {
+                message += `${i + 1}. ${item.name}%0A`;
+                message += `   Quantité: ${item.quantity}%0A`;
+                message += `   Prix: ${(item.price * item.quantity).toLocaleString()} HTG%0A%0A`;
+                total += item.price * item.quantity;
+            });
+            
+            message += `*Total: ${total.toLocaleString()} HTG*%0A%0A`;
+            message += `Merci de confirmer ma commande !`;
+            
+            window.open(`https://wa.me/50938954747?text=${message}`, '_blank');
+        }
+        
+        // Send contact message via WhatsApp
+        function sendMessage() {
+            const name = document.getElementById('contact-name').value;
+            const phone = document.getElementById('contact-phone').value;
+            const subject = document.getElementById('contact-subject').value;
+            const message = document.getElementById('contact-message').value;
+            
+            if (!name || !message) {
+                showToast('Veuillez remplir tous les champs !');
+                return;
+            }
+            
+            let waMessage = `📩 *Message de ${name}*%0A%0A`;
+            waMessage += `*Sujet:* ${subject}%0A`;
+            waMessage += `*Téléphone:* ${phone || 'Non fourni'}%0A%0A`;
+            waMessage += `*Message:*%0A${message}`;
+            
+            window.open(`https://wa.me/50938954747?text=${waMessage}`, '_blank');
+            showToast('Message envoyé sur WhatsApp !');
+        }
+        
+        // Subscribe
+        function subscribe() {
+            showToast('Merci pour votre inscription ! 🎉');
+        }
+        
+        // Show toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-message');
+            msgEl.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+        
+        // Filter products
+        function filterProducts(category) {
+            const cards = document.querySelectorAll('.product-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            // Update buttons
+            buttons.forEach(btn => {
+                if (btn.dataset.filter === category) {
+                    btn.classList.remove('glass', 'text-gray-300');
+                    btn.classList.add('bg-sky-500', 'text-white');
+                } else {
+                    btn.classList.add('glass', 'text-gray-300');
+                    btn.classList.remove('bg-sky-500', 'text-white');
+                }
+            });
+            
+            // Filter cards
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                    gsap.fromTo(card, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5 });
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         }
         
         // Custom cursor
@@ -934,7 +1214,6 @@
                 this.x += this.speedX;
                 this.y += this.speedY;
                 
-                // Mouse interaction
                 const dx = mouseX - this.x;
                 const dy = mouseY - this.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
@@ -968,7 +1247,6 @@
         function animateParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Draw connections
             for (let i = 0; i < particles.length; i++) {
                 for (let j = i + 1; j < particles.length; j++) {
                     const dx = particles[i].x - particles[j].x;
@@ -1019,6 +1297,24 @@
             });
         });
         
+        // Counter animation
+        document.querySelectorAll('.counter').forEach(counter => {
+            const target = parseInt(counter.dataset.target);
+            gsap.to(counter, {
+                textContent: target,
+                duration: 2,
+                ease: 'power1.out',
+                snap: { textContent: 1 },
+                scrollTrigger: {
+                    trigger: counter,
+                    start: 'top 80%'
+                },
+                onUpdate: function() {
+                    counter.textContent = Math.floor(this.targets()[0].textContent).toLocaleString();
+                }
+            });
+        });
+        
         // 3D Card tilt effect
         document.querySelectorAll('.card-3d').forEach(card => {
             card.addEventListener('mousemove', (e) => {
@@ -1065,24 +1361,6 @@
                     });
                 }
             });
-        });
-        
-        // Counter animation
-        const counters = document.querySelectorAll('.gradient-text');
-        counters.forEach(counter => {
-            const target = parseInt(counter.textContent);
-            if (!isNaN(target)) {
-                gsap.from(counter, {
-                    textContent: 0,
-                    duration: 2,
-                    ease: 'power1.out',
-                    snap: { textContent: 1 },
-                    scrollTrigger: {
-                        trigger: counter,
-                        start: 'top 80%'
-                    }
-                });
-            }
         });
     </script>
 </body>
