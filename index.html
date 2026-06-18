@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHERI STYLE - Mode & Vêtements</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --primary-glow: rgba(14, 165, 233, 0.5);
+            --accent: #6366f1;
+            --dark: #0a0a0f;
+            --darker: #050508;
+            --surface: #13131f;
+            --surface-light: #1c1c2e;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--darker);
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        
+        .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        /* 3D Canvas Background */
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        /* Glassmorphism */
+        .glass {
+            background: rgba(19, 19, 31, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .glass-strong {
+            background: rgba(19, 19, 31, 0.85);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(14, 165, 233, 0.15);
+        }
+        
+        /* Glow effects */
+        .glow-blue {
+            box-shadow: 0 0 40px rgba(14, 165, 233, 0.3), 0 0 80px rgba(14, 165, 233, 0.1);
+        }
+        
+        .glow-text {
+            text-shadow: 0 0 30px rgba(14, 165, 233, 0.5);
+        }
+        
+        /* 3D Card */
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .card-3d:hover {
+            transform: translateY(-10px) rotateX(5deg);
+        }
+        
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #0ea5e9, #6366f1, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Mesh gradient background */
+        .mesh-gradient {
+            background: 
+                radial-gradient(at 40% 20%, rgba(14, 165, 233, 0.15) 0px, transparent 50%),
+                radial-gradient(at 80% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, rgba(168, 85, 247, 0.1) 0px, transparent 50%),
+                radial-gradient(at 80% 50%, rgba(14, 165, 233, 0.1) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                var(--darker);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--darker);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        
+        /* Navigation */
+        .nav-link {
+            position: relative;
+            overflow: hidden;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        /* Product card shine */
+        .shine {
+            position: relative;
+            overflow: hidden;
+        }
+        .shine::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.05) 50%,
+                transparent 70%
+            );
+            transform: rotate(45deg);
+            transition: all 0.6s;
+            opacity: 0;
+        }
+        .shine:hover::before {
+            opacity: 1;
+            left: 100%;
+        }
+        
+        /* Loader */
+        .loader {
+            border: 3px solid rgba(14, 165, 233, 0.1);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Particle */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        
+        /* Magnetic button */
+        .magnetic-btn {
+            transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        /* Section reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        
+        /* Custom cursor */
+        .cursor-dot {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s;
+            mix-blend-mode: difference;
+        }
+        
+        /* Grid pattern */
+        .grid-pattern {
+            background-image: 
+                linear-gradient(rgba(14, 165, 233, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(14, 165, 233, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        /* Price tag */
+        .price-tag {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            clip-path: polygon(0 0, 100% 0, 100% 70%, 85% 100%, 0 100%);
+        }
+    </style>
+</head>
+<body class="mesh-gradient">
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot hidden md:block" id="cursor"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-500">
+        <div class="glass-strong px-6 py-4 mx-4 mt-4 rounded-2xl">
+            <div class="flex items-center justify-between max-w-7xl mx-auto">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center glow-blue">
+                        <i data-lucide="shirt" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <span class="font-display text-2xl font-bold tracking-tight">
+                        CHERI <span class="gradient-text">STYLE</span>
+                    </span>
+                </div>
+                
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#accueil" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors">Accueil</a>
+                    <a href="#produits" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors">Produits</a>
+                    <a href="#nouveautes" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors">Nouveautés</a>
+                    <a href="#contact" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors">Contact</a>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <button class="relative p-2 rounded-xl hover:bg-white/5 transition-colors">
+                        <i data-lucide="shopping-bag" class="w-5 h-5 text-gray-300"></i>
+                        <span class="absolute -top-1 -right-1 w-5 h-5 bg-sky-500 rounded-full text-xs flex items-center justify-center font-bold">3</span>
+                    </button>
+                    <button class="md:hidden p-2 rounded-xl hover:bg-white/5 transition-colors" onclick="toggleMenu()">
+                        <i data-lucide="menu" class="w-5 h-5 text-gray-300"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass-strong mx-4 mt-2 rounded-2xl p-6">
+            <div class="flex flex-col gap-4">
+                <a href="#accueil" class="text-sm font-medium text-gray-300 hover:text-white">Accueil</a>
+                <a href="#produits" class="text-sm font-medium text-gray-300 hover:text-white">Produits</a>
+                <a href="#nouveautes" class="text-sm font-medium text-gray-300 hover:text-white">Nouveautés</a>
+                <a href="#contact" class="text-sm font-medium text-gray-300 hover:text-white">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="accueil" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <canvas id="hero-canvas"></canvas>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-sky-500/20">
+                    <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
+                    <span class="text-xs font-medium text-sky-400 uppercase tracking-wider">Nouvelle Collection 2026</span>
+                </div>
+                
+                <h1 class="font-display text-5xl md:text-7xl font-bold leading-tight">
+                    Style Qui <br>
+                    <span class="gradient-text glow-text">Fait la Différence</span>
+                </h1>
+                
+                <p class="text-lg text-gray-400 max-w-lg leading-relaxed">
+                    Découvrez notre collection exclusive de maillots et vêtements tendance. 
+                    Qualité premium, designs uniques, livraison rapide partout en Haïti.
+                </p>
+                
+                <div class="flex flex-wrap gap-4">
+                    <button class="magnetic-btn px-8 py-4 rounded-2xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-semibold glow-blue hover:scale-105 transition-transform flex items-center gap-2">
+                        <span>Voir la Collection</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </button>
+                    <button class="magnetic-btn px-8 py-4 rounded-2xl glass text-white font-semibold hover:bg-white/10 transition-colors flex items-center gap-2">
+                        <i data-lucide="play-circle" class="w-5 h-5"></i>
+                        <span>Notre Histoire</span>
+                    </button>
+                </div>
+                
+                <div class="flex items-center gap-8 pt-4">
+                    <div>
+                        <div class="font-display text-3xl font-bold gradient-text">2,500+</div>
+                        <div class="text-sm text-gray-500">Clients Satisfaits</div>
+                    </div>
+                    <div class="w-px h-12 bg-gray-800"></div>
+                    <div>
+                        <div class="font-display text-3xl font-bold gradient-text">500+</div>
+                        <div class="text-sm text-gray-500">Produits Disponibles</div>
+                    </div>
+                    <div class="w-px h-12 bg-gray-800"></div>
+                    <div>
+                        <div class="font-display text-3xl font-bold gradient-text">4.9</div>
+                        <div class="text-sm text-gray-500">Note Moyenne</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="relative hidden lg:block">
+                <div class="absolute inset-0 bg-gradient-to-r from-sky-500/20 to-indigo-500/20 rounded-full blur-3xl"></div>
+                <div class="relative float">
+                    <div class="glass-strong rounded-3xl p-2 glow-blue">
+                        <img src="https://i.postimg.cc/placeholder-hero.jpg" 
+                             alt="Collection CHERI STYLE" 
+                             class="rounded-2xl w-full h-[500px] object-cover"
+                             onerror="this.src='https://images.unsplash.com/photo-1556906781-9a412961c28c?w=800&auto=format&fit=crop'">
+                        <div class="absolute -bottom-6 -left-6 glass-strong rounded-2xl p-4 glow-blue">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-400 to-indigo-500 flex items-center justify-center">
+                                    <i data-lucide="trending-up" class="w-6 h-6 text-white"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-bold">Meilleure Vente</div>
+                                    <div class="text-xs text-gray-400">Maillot Édition Limitée</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+            <i data-lucide="chevron-down" class="w-6 h-6 text-sky-400"></i>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="font-display text-4xl font-bold mb-4">Nos <span class="gradient-text">Catégories</span></h2>
+                <p class="text-gray-400">Trouvez exactement ce que vous cherchez</p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="card-3d glass rounded-2xl p-6 text-center cursor-pointer hover:border-sky-500/30 transition-all group reveal">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-sky-500/20 to-indigo-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i data-lucide="shirt" class="w-8 h-8 text-sky-400"></i>
+                    </div>
+                    <h3 class="font-semibold mb-1">Maillots</h3>
+                    <p class="text-sm text-gray-500">128 produits</p>
+                </div>
+                
+                <div class="card-3d glass rounded-2xl p-6 text-center cursor-pointer hover:border-sky-500/30 transition-all group reveal">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i data-lucide="footprints" class="w-8 h-8 text-indigo-400"></i>
+                    </div>
+                    <h3 class="font-semibold mb-1">Chaussures</h3>
+                    <p class="text-sm text-gray-500">86 produits</p>
+                </div>
+                
+                <div class="card-3d glass rounded-2xl p-6 text-center cursor-pointer hover:border-sky-500/30 transition-all group reveal">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i data-lucide="crown" class="w-8 h-8 text-purple-400"></i>
+                    </div>
+                    <h3 class="font-semibold mb-1">Accessoires</h3>
+                    <p class="text-sm text-gray-500">214 produits</p>
+                </div>
+                
+                <div class="card-3d glass rounded-2xl p-6 text-center cursor-pointer hover:border-sky-500/30 transition-all group reveal">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-pink-500/20 to-rose-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i data-lucide="sparkles" class="w-8 h-8 text-pink-400"></i>
+                    </div>
+                    <h3 class="font-semibold mb-1">Nouveautés</h3>
+                    <p class="text-sm text-gray-500">45 produits</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="produits" class="py-20 relative grid-pattern">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                <div class="reveal">
+                    <h2 class="font-display text-4xl font-bold mb-4">Nos <span class="gradient-text">Produits</span></h2>
+                    <p class="text-gray-400">Sélection premium de notre catalogue</p>
+                </div>
+                
+                <div class="flex gap-2 overflow-x-auto pb-2">
+                    <button class="px-6 py-2 rounded-full bg-sky-500 text-white text-sm font-medium whitespace-nowrap">Tous</button>
+                    <button class="px-6 py-2 rounded-full glass text-gray-300 text-sm font-medium hover:bg-white/10 whitespace-nowrap transition-colors">Maillots</button>
+                    <button class="px-6 py-2 rounded-full glass text-gray-300 text-sm font-medium hover:bg-white/10 whitespace-nowrap transition-colors">T-Shirts</button>
+                    <button class="px-6 py-2 rounded-full glass text-gray-300 text-sm font-medium hover:bg-white/10 whitespace-nowrap transition-colors">Chaussures</button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Product 1 -->
+                <div class="shine glass rounded-3xl overflow-hidden group reveal">
+                    <div class="relative h-80 overflow-hidden">
+                        <img src="https://i.postimg.cc/maillot-1.jpg" 
+                             alt="Maillot Premium" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                             onerror="this.src='https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&auto=format&fit=crop'">
+                        <div class="absolute top-4 right-4 price-tag px-4 py-2 text-white font-bold text-sm">
+                            2,500 HTG
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                            <button class="w-full py-3 rounded-xl bg-white text-black font-semibold hover:bg-sky-400 transition-colors flex items-center justify-center gap-2">
+                                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                                Ajouter au Panier
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="px-2 py-1 rounded-md bg-sky-500/20 text-sky-400 text-xs font-medium">Nouveau</span>
+                            <div class="flex items-center gap-1">
+                                <i data-lucide="star" class="w-3 h-3 text-yellow-400 fill-yellow-400"></i>
+                                <span class="text-xs text-gray-400">4.8</span>
+                            </div>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-1">Maillot Édition Limitée</h3>
+                        <p class="text-sm text-gray-500 mb-4">Design exclusif, matière premium respirante</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex gap-2">
+                                <span class="w-6 h-6 rounded-full bg-black border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
+                                <span class="w-6 h-6 rounded-full bg-blue-600 border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
+                                <span class="w-6 h-6 rounded-full bg-red-500 border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
+                            </div>
+                            <span class="text-sky-400 text-sm font-medium">En stock</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="shine glass rounded-3xl overflow-hidden group reveal">
+                    <div class="relative h-80 overflow-hidden">
+                        <img src="https://i.postimg.cc/maillot-2.jpg" 
+                             alt="T-Shirt Streetwear" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                             onerror="this.src='https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&auto=format&fit=crop'">
+                        <div class="absolute top-4 right-4 price-tag px-4 py-2 text-white font-bold text-sm">
+                            1,800 HTG
+                        </div>
+                        <div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-red-500/80 text-white text-xs font-bold">
+                            -20%
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                            <button class="w-full py-3 rounded-xl bg-white text-black font-semibold hover:bg-sky-400 transition-colors flex items-center justify-center gap-2">
+                                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                                Ajouter au Panier
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="px-2 py-1 rounded-md bg-red-500/20 text-red-400 text-xs font-medium">Promo</span>
+                            <div class="flex items-center gap-1">
+                                <i data-lucide="star" class="w-3 h-3 text-yellow-400 fill-yellow-400"></i>
+                                <span class="text-xs text-gray-400">4.6</span>
+                            </div>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-1">T-Shirt Streetwear Premium</h3>
+                        <p class="text-sm text-gray-500 mb-4">Coton 100% bio, coupe oversize tendance</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex gap-2">
+                                <span class="w-6 h-6 rounded-full bg-white border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
+                                <span class="w-6 h-6 rounded-full bg-gray-800 border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
+                            </div>
+                            <span class="text-sky-400 text-sm font-medium">En stock</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="shine glass rounded-3xl overflow-hidden group reveal">
+                    <div class="relative h-80 overflow-hidden">
+                        <img src="https://i.postimg.cc/chaussures-1.jpg" 
+                             alt="Sneakers Urban" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                             onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop'">
+                        <div class="absolute top-4 right-4 price-tag px-4 py-2 text-white font-bold text-sm">
+                            4,500 HTG
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                            <button class="w-full py-3 rounded-xl bg-white text-black font-semibold hover:bg-sky-400 transition-colors flex items-center justify-center gap-2">
+                                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                                Ajouter au Panier
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="px-2 py-1 rounded-md bg-purple-500/20 text-purple-400 text-xs font-medium">Best-seller</span>
+                            <div class="flex items-center gap-1">
+                                <i data-lucide="star" class="w-3 h-3 text-yellow-400 fill-yellow-400"></i>
+                                <span class="text-xs text-gray-400">4.9</span>
+                            </div>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-1">Sneakers Urban Elite</h3>
+                        <p class="text-sm text-gray-500 mb-4">Confort maximal, design futuriste</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex gap-2">
+                                <span class="w-6 h-6 rounded-full bg-black border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
+                                <span class="w-6 h-6 rounded-full bg-white border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
+                            </div>
+                            <span class="text-yellow-400 text-sm font-medium">Plus que 3</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="shine glass rounded-3xl overflow-hidden group reveal">
+                    <div class="relative h-80 overflow-hidden">
+                        <img src="https://i.postimg.cc/casquette-1.jpg" 
+                             alt="Casquette Snapback" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                             onerror="this.src='https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600&auto=format&fit=crop'">
+                        <div class="absolute top-4 right-4 price-tag px-4 py-2 text-white font-bold text-sm">
+                            2,500 HTG
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                            <button class="w-full py-3 rounded-xl bg-white text-black font-semibold hover:bg-sky-400 transition-colors flex items-center justify-center gap-2">
+                                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                                Ajouter au Panier
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="px-2 py-1 rounded-md bg-sky-500/20 text-sky-400 text-xs font-medium">Nouveau</span>
+                            <div class="flex items-center gap-1">
+                                <i data-lucide="star" class="w-3 h-3 text-yellow-400 fill-yellow-400"></i>
+                                <span class="text-xs text-gray-400">4.7</span>
+                            </div>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-1">Casquette Snapback NY</h3>
+                        <p class="text-sm text-gray-500 mb-4">Broderie premium, ajustable, style urbain</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex gap-2">
+                                <span class="w-6 h-6 rounded-full bg-black border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
+                                <span class="w-6 h-6 rounded-full bg-blue-900 border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
+                                <span class="w-6 h-6 rounded-full bg-red-600 border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
+                            </div>
+                            <span class="text-sky-400 text-sm font-medium">En stock</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 5 -->
+                <div class="shine glass rounded-3xl overflow-hidden group reveal">
+                    <div class="relative h-80 overflow-hidden">
+                        <img src="https://i.postimg.cc/short-1.jpg" 
+                             alt="Short Sport" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                             onerror="this.src='https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=600&auto=format&fit=crop'">
+                        <div class="absolute top-4 right-4 price-tag px-4 py-2 text-white font-bold text-sm">
+                            1,500 HTG
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                            <button class="w-full py-3 rounded-xl bg-white text-black font-semibold hover:bg-sky-400 transition-colors flex items-center justify-center gap-2">
+                                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                                Ajouter au Panier
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="px-2 py-1 rounded-md bg-green-500/20 text-green-400 text-xs font-medium">Populaire</span>
+                            <div class="flex items-center gap-1">
+                                <i data-lucide="star" class="w-3 h-3 text-yellow-400 fill-yellow-400"></i>
+                                <span class="text-xs text-gray-400">4.5</span>
+                            </div>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-1">Short Sport Pro</h3>
+                        <p class="text-sm text-gray-500 mb-4">Séchage rapide, poche zippée, léger</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex gap-2">
+                                <span class="w-6 h-6 rounded-full bg-black border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
+                                <span class="w-6 h-6 rounded-full bg-gray-600 border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
+                            </div>
+                            <span class="text-sky-400 text-sm font-medium">En stock</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 6 -->
+                <div class="shine glass rounded-3xl overflow-hidden group reveal">
+                    <div class="relative h-80 overflow-hidden">
+                        <img src="https://i.postimg.cc/ensemble-1.jpg" 
+                             alt="Ensemble Complet" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                             onerror="this.src='https://images.unsplash.com/photo-1617137968427-85924c800a22?w=600&auto=format&fit=crop'">
+                        <div class="absolute top-4 right-4 price-tag px-4 py-2 text-white font-bold text-sm">
+                            6,500 HTG
+                        </div>
+                        <div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-sky-500/80 text-white text-xs font-bold">
+                            Pack
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                            <button class="w-full py-3 rounded-xl bg-white text-black font-semibold hover:bg-sky-400 transition-colors flex items-center justify-center gap-2">
+                                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                                Ajouter au Panier
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="px-2 py-1 rounded-md bg-purple-500/20 text-purple-400 text-xs font-medium">Pack Économique</span>
+                            <div class="flex items-center gap-1">
+                                <i data-lucide="star" class="w-3 h-3 text-yellow-400 fill-yellow-400"></i>
+                                <span class="text-xs text-gray-400">5.0</span>
+                            </div>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-1">Ensemble Complet Urban</h3>
+                        <p class="text-sm text-gray-500 mb-4">Maillot + Short + Casquette, pack complet</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex gap-2">
+                                <span class="w-6 h-6 rounded-full bg-black border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
+                                <span class="w-6 h-6 rounded-full bg-white border-2 border-white/20 cursor-pointer hover:scale-110 transition-transform"></span>
+                            </div>
+                            <span class="text-sky-400 text-sm font-medium">En stock</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button class="magnetic-btn px-8 py-4 rounded-2xl glass text-white font-semibold hover:bg-white/10 transition-colors inline-flex items-center gap-2">
+                    <span>Voir Tous les Produits</span>
+                    <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-sky-500/5 to-transparent"></div>
+        <div class="max-w-7xl mx-auto px-6 relative">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass rounded-3xl p-8 text-center reveal">
+                    <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-sky-500/20 to-indigo-500/20 flex items-center justify-center">
+                        <i data-lucide="truck" class="w-8 h-8 text-sky-400"></i>
+                    </div>
+                    <h3 class="font-display text-xl font-bold mb-3">Livraison Rapide</h3>
+                    <p class="text-gray-400">Livraison express partout en Haïti sous 24-48h. Suivi en temps réel de votre commande.</p>
+                </div>
+                
+                <div class="glass rounded-3xl p-8 text-center reveal">
+                    <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center">
+                        <i data-lucide="shield-check" class="w-8 h-8 text-indigo-400"></i>
+                    </div>
+                    <h3 class="font-display text-xl font-bold mb-3">Qualité Garantie</h3>
+                    <p class="text-gray-400">Tous nos produits sont vérifiés et contrôlés. Satisfait ou remboursé sous 7 jours.</p>
+                </div>
+                
+                <div class="glass rounded-3xl p-8 text-center reveal">
+                    <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
+                        <i data-lucide="headphones" class="w-8 h-8 text-purple-400"></i>
+                    </div>
+                    <h3 class="font-display text-xl font-bold mb-3">Support 24/7</h3>
+                    <p class="text-gray-400">Notre équipe est disponible jour et night pour répondre à toutes vos questions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-20 relative">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="glass-strong rounded-3xl p-12 text-center relative overflow-hidden glow-blue reveal">
+                <div class="absolute inset-0 bg-gradient-to-r from-sky-500/10 to-indigo-500/10"></div>
+                <div class="relative z-10">
+                    <h2 class="font-display text-3xl md:text-4xl font-bold mb-4">Rejoignez la <span class="gradient-text">Famille</span></h2>
+                    <p class="text-gray-400 mb-8 max-w-lg mx-auto">Inscrivez-vous pour recevoir les nouveautés, les offres exclusives et les promotions spéciales.</p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                        <input type="email" placeholder="Votre email" 
+                               class="flex-1 px-6 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-sky-500 transition-colors">
+                        <button class="px-8 py-4 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-semibold hover:scale-105 transition-transform whitespace-nowrap">
+                            S'inscrire
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="reveal">
+                    <h2 class="font-display text-4xl font-bold mb-6">Contactez-<span class="gradient-text">nous</span></h2>
+                    <p class="text-gray-400 mb-8">Une question ? Un projet personnalisé ? N'hésitez pas à nous contacter. Notre équipe vous répond sous 24h.</p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-500/20 to-indigo-500/20 flex items-center justify-center">
+                                <i data-lucide="map-pin" class="w-5 h-5 text-sky-400"></i>
+                            </div>
+                            <div>
+                                <div class="font-semibold">Adresse</div>
+                                <div class="text-sm text-gray-400">Delmas 31, Port-au-Prince, Haïti</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center">
+                                <i data-lucide="phone" class="w-5 h-5 text-indigo-400"></i>
+                            </div>
+                            <div>
+                                <div class="font-semibold">Téléphone</div>
+                                <div class="text-sm text-gray-400">+509 3895 4747</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
+                                <i data-lucide="mail" class="w-5 h-5 text-purple-400"></i>
+                            </div>
+                            <div>
+                                <div class="font-semibold">Email</div>
+                                <div class="text-sm text-gray-400">contact@cheristyle.ht</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500/20 to-rose-500/20 flex items-center justify-center">
+                                <i data-lucide="clock" class="w-5 h-5 text-pink-400"></i>
+                            </div>
+                            <div>
+                                <div class="font-semibold">Horaires</div>
+                                <div class="text-sm text-gray-400">Lun - Sam : 8h00 - 18h00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-4 mt-8">
+                        <a href="#" class="w-12 h-12 rounded-xl glass flex items-center justify-center hover:bg-sky-500/20 hover:border-sky-500/30 transition-all">
+                            <i data-lucide="instagram" class="w-5 h-5 text-gray-300"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-xl glass flex items-center justify-center hover:bg-sky-500/20 hover:border-sky-500/30 transition-all">
+                            <i data-lucide="facebook" class="w-5 h-5 text-gray-300"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-xl glass flex items-center justify-center hover:bg-sky-500/20 hover:border-sky-500/30 transition-all">
+                            <i data-lucide="twitter" class="w-5 h-5 text-gray-300"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-xl glass flex items-center justify-center hover:bg-sky-500/20 hover:border-sky-500/30 transition-all">
+                            <i data-lucide="whatsapp" class="w-5 h-5 text-gray-300"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="glass rounded-3xl p-8 reveal">
+                    <form class="space-y-6" onsubmit="event.preventDefault(); alert('Message envoyé ! Nous vous contacterons sous peu.');">
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Nom</label>
+                                <input type="text" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-sky-500 transition-colors" placeholder="Votre nom">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Email</label>
+                                <input type="email" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-sky-500 transition-colors" placeholder="votre@email.com">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Sujet</label>
+                            <select class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-sky-500 transition-colors">
+                                <option class="bg-gray-900">Commande</option>
+                                <option class="bg-gray-900">Question produit</option>
+                                <option class="bg-gray-900">Livraison</option>
+                                <option class="bg-gray-900">Autre</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Message</label>
+                            <textarea rows="4" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-sky-500 transition-colors resize-none" placeholder="Votre message..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-semibold hover:scale-[1.02] transition-transform flex items-center justify-center gap-2">
+                            <i data-lucide="send" class="w-5 h-5"></i>
+                            <span>Envoyer le Message</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <div class="md:col-span-1">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center">
+                            <i data-lucide="shirt" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <span class="font-display text-xl font-bold">CHERI <span class="gradient-text">STYLE</span></span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-6">Votre destination mode en Haïti. Qualité, style et authenticité depuis 2024.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Produits</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-sky-400 transition-colors">Maillots</a></li>
+                        <li><a href="#" class="hover:text-sky-400 transition-colors">T-Shirts</a></li>
+                        <li><a href="#" class="hover:text-sky-400 transition-colors">Chaussures</a></li>
+                        <li><a href="#" class="hover:text-sky-400 transition-colors">Accessoires</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Liens Rapides</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-sky-400 transition-colors">À Propos</a></li>
+                        <li><a href="#" class="hover:text-sky-400 transition-colors">Livraison</a></li>
+                        <li><a href="#" class="hover:text-sky-400 transition-colors">Retours</a></li>
+                        <li><a href="#" class="hover:text-sky-400 transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Moyens de Paiement</h4>
+                    <div class="flex gap-3 flex-wrap">
+                        <div class="px-3 py-2 rounded-lg glass text-xs text-gray-400">MonCash</div>
+                        <div class="px-3 py-2 rounded-lg glass text-xs text-gray-400">NatCash</div>
+                        <div class="px-3 py-2 rounded-lg glass text-xs text-gray-400">Cash</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm text-gray-500"> 2026 CHERI STYLE. Tous droits réservés.</p>
+                <p class="text-sm text-gray-500">Conçu avec ❤️ en Haïti</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Mobile menu toggle
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+        
+        // Custom cursor
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX - 10 + 'px';
+            cursor.style.top = e.clientY - 10 + 'px';
+        });
+        
+        document.addEventListener('mousedown', () => {
+            cursor.style.transform = 'scale(0.8)';
+        });
+        
+        document.addEventListener('mouseup', () => {
+            cursor.style.transform = 'scale(1)';
+        });
+        
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.querySelector('.glass-strong').style.background = 'rgba(5, 5, 8, 0.95)';
+            } else {
+                navbar.querySelector('.glass-strong').style.background = 'rgba(19, 19, 31, 0.85)';
+            }
+        });
+        
+        // 3D Particle Canvas
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouseX = 0;
+        let mouseY = 0;
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                // Mouse interaction
+                const dx = mouseX - this.x;
+                const dy = mouseY - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < 100) {
+                    this.x -= dx * 0.02;
+                    this.y -= dy * 0.02;
+                }
+                
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            
+            draw() {
+                ctx.fillStyle = `rgba(14, 165, 233, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
+            }
+        }
+        initParticles();
+        
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw connections
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 150) {
+                        ctx.strokeStyle = `rgba(14, 165, 233, ${0.1 * (1 - distance / 150)})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Reveal animations
+        gsap.utils.toArray('.reveal').forEach((element, i) => {
+            gsap.to(element, {
+                scrollTrigger: {
+                    trigger: element,
+                    start: 'top 85%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                delay: i * 0.1,
+                ease: 'power3.out'
+            });
+        });
+        
+        // 3D Card tilt effect
+        document.querySelectorAll('.card-3d').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+            });
+        });
+        
+        // Magnetic button effect
+        document.querySelectorAll('.magnetic-btn').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+            });
+            
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0, 0)';
+            });
+        });
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Counter animation
+        const counters = document.querySelectorAll('.gradient-text');
+        counters.forEach(counter => {
+            const target = parseInt(counter.textContent);
+            if (!isNaN(target)) {
+                gsap.from(counter, {
+                    textContent: 0,
+                    duration: 2,
+                    ease: 'power1.out',
+                    snap: { textContent: 1 },
+                    scrollTrigger: {
+                        trigger: counter,
+                        start: 'top 80%'
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
