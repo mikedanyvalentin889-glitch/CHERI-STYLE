@@ -1112,7 +1112,7 @@ let cart=[];
 function addToCart(name,price,image){
     const existingItem=cart.find(item=>item.name===name);
     if(existingItem){existingItem.quantity++}
-    else{cart.push({name:price,image,quantity:1})}
+    else{cart.push({name:name,price:price,image:image,quantity:1})}
     updateCartUI();
     showToast("Produit ajoute au panier!");
     document.getElementById("cartOverlay").classList.add("active");
