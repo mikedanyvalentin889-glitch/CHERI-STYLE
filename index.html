@@ -1,1381 +1,320 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHERI STYLE - Mode Haïtienne</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #1a1a1a;
-            --gold: #d4af37;
-            --gold-light: #f4e4a6;
-            --white: #ffffff;
-            --gray: #f5f5f5;
-            --dark-gray: #333333;
-            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--white);
-            color: var(--primary);
-            overflow-x: hidden;
-        }
-
-        /* Header */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(212,175,55,0.2);
-            transition: var(--transition);
-        }
-
-        header.scrolled {
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            font-weight: 900;
-            color: var(--primary);
-            text-decoration: none;
-            letter-spacing: 2px;
-        }
-
-        .logo span {
-            color: var(--gold);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--primary);
-            font-weight: 500;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            transition: var(--transition);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--gold);
-            transition: var(--transition);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .nav-links a:hover {
-            color: var(--gold);
-        }
-
-        .header-icons {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-        }
-
-        .header-icons a {
-            color: var(--primary);
-            font-size: 1.2rem;
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .header-icons a:hover {
-            color: var(--gold);
-            transform: scale(1.1);
-        }
-
-        .cart-count {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: var(--gold);
-            color: var(--white);
-            font-size: 0.7rem;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-        }
-
-        /* Hero */
-        .hero {
-            height: 100vh;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(212,175,55,0.1)" stroke-width="0.5"/></svg>');
-            background-size: 200px;
-            animation: float 20s linear infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(-100px) rotate(360deg); }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 800px;
-            padding: 0 2rem;
-        }
-
-        .hero-subtitle {
-            color: var(--gold);
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            margin-bottom: 1.5rem;
-            animation: fadeInUp 1s ease;
-        }
-
-        .hero-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 5rem;
-            font-weight: 900;
-            color: var(--white);
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            animation: fadeInUp 1s ease 0.2s both;
-        }
-
-        .hero-title span {
-            color: var(--gold);
-            display: block;
-        }
-
-        .hero-desc {
-            color: rgba(255,255,255,0.7);
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 2.5rem;
-            animation: fadeInUp 1s ease 0.4s both;
-        }
-
-        .hero-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--gold);
-            color: var(--primary);
-            padding: 1rem 2.5rem;
-            text-decoration: none;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border: 2px solid var(--gold);
-            transition: var(--transition);
-            animation: fadeInUp 1s ease 0.6s both;
-        }
-
-        .hero-btn:hover {
-            background: transparent;
-            color: var(--gold);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(212,175,55,0.3);
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Products Section */
-        .products-section {
-            padding: 6rem 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-subtitle {
-            color: var(--gold);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-
-        .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 3px;
-            background: var(--gold);
-            margin: 1rem auto;
-        }
-
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2.5rem;
-        }
-
-        .product-card {
-            background: var(--white);
-            border-radius: 0;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            transition: var(--transition);
-            position: relative;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }
-
-        .product-badge {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            background: var(--gold);
-            color: var(--primary);
-            padding: 0.4rem 1rem;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            z-index: 10;
-        }
-
-        .product-image {
-            width: 100%;
-            height: 350px;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-
-        .product-card:hover .product-image {
-            transform: scale(1.05);
-        }
-
-        .product-info {
-            padding: 1.5rem 2rem;
-        }
-
-        .product-category {
-            color: var(--gold);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 0.5rem;
-        }
-
-        .product-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--primary);
-        }
-
-        .product-price {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--gold);
-            margin-bottom: 1rem;
-        }
-
-        .product-price span {
-            font-size: 0.9rem;
-            color: var(--dark-gray);
-            text-decoration: line-through;
-            margin-left: 0.5rem;
-        }
-
-        .product-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .btn-add-cart {
-            flex: 1;
-            background: var(--primary);
-            color: var(--white);
-            border: none;
-            padding: 0.8rem;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .btn-add-cart:hover {
-            background: var(--gold);
-            color: var(--primary);
-        }
-
-        .btn-wishlist {
-            width: 45px;
-            height: 45px;
-            border: 1px solid #ddd;
-            background: var(--white);
-            color: var(--primary);
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-wishlist:hover, .btn-wishlist.active {
-            background: #ff4757;
-            color: var(--white);
-            border-color: #ff4757;
-        }
-
-        /* About Section */
-        .about-section {
-            background: var(--gray);
-            padding: 6rem 2rem;
-        }
-
-        .about-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .about-image {
-            position: relative;
-        }
-
-        .about-image img {
-            width: 100%;
-            height: 500px;
-            object-fit: cover;
-            box-shadow: 20px 20px 0 var(--gold);
-        }
-
-        .about-content h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .about-content p {
-            color: var(--dark-gray);
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-        }
-
-        .about-features {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .feature-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-        }
-
-        .feature-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--gold);
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-
-        .feature-text h4 {
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-        }
-
-        .feature-text p {
-            font-size: 0.85rem;
-            color: #666;
-            margin: 0;
-        }
-
-        /* Contact Section */
-        .contact-section {
-            padding: 6rem 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-        }
-
-        .contact-info h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .contact-item i {
-            width: 45px;
-            height: 45px;
-            background: var(--gold);
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-        }
-
-        .contact-item h4 {
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-        }
-
-        .contact-item p {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .contact-form {
-            background: var(--gray);
-            padding: 3rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 1rem;
-            border: 1px solid #ddd;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.95rem;
-            transition: var(--transition);
-            background: var(--white);
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(212,175,55,0.1);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .btn-submit {
-            width: 100%;
-            background: var(--primary);
-            color: var(--white);
-            border: none;
-            padding: 1rem;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .btn-submit:hover {
-            background: var(--gold);
-            color: var(--primary);
-        }
-
-        /* Footer */
-        footer {
-            background: var(--primary);
-            color: var(--white);
-            padding: 4rem 2rem 2rem;
-        }
-
-        .footer-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 3rem;
-            margin-bottom: 3rem;
-        }
-
-        .footer-brand h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-        }
-
-        .footer-brand h3 span {
-            color: var(--gold);
-        }
-
-        .footer-brand p {
-            color: rgba(255,255,255,0.6);
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .social-links a {
-            width: 40px;
-            height: 40px;
-            border: 1px solid rgba(255,255,255,0.2);
-            color: var(--white);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-        }
-
-        .social-links a:hover {
-            background: var(--gold);
-            border-color: var(--gold);
-            color: var(--primary);
-        }
-
-        .footer-links h4 {
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.9rem;
-        }
-
-        .footer-links ul {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.8rem;
-        }
-
-        .footer-links a {
-            color: rgba(255,255,255,0.6);
-            text-decoration: none;
-            transition: var(--transition);
-            font-size: 0.9rem;
-        }
-
-        .footer-links a:hover {
-            color: var(--gold);
-            padding-left: 5px;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 2rem;
-            text-align: center;
-            color: rgba(255,255,255,0.4);
-            font-size: 0.85rem;
-        }
-
-        /* Cart Sidebar */
-        .cart-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-        }
-
-        .cart-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .cart-sidebar {
-            position: fixed;
-            top: 0;
-            right: -450px;
-            width: 450px;
-            max-width: 100%;
-            height: 100vh;
-            background: var(--white);
-            z-index: 2001;
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .cart-sidebar.active {
-            right: 0;
-        }
-
-        .cart-header {
-            padding: 1.5rem 2rem;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cart-header h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-        }
-
-        .cart-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--primary);
-            transition: var(--transition);
-        }
-
-        .cart-close:hover {
-            color: var(--gold);
-            transform: rotate(90deg);
-        }
-
-        .cart-items {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem 2rem;
-        }
-
-        .cart-item {
-            display: flex;
-            gap: 1rem;
-            padding: 1rem 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .cart-item img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-        }
-
-        .cart-item-info h4 {
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-        }
-
-        .cart-item-price {
-            color: var(--gold);
-            font-weight: 700;
-        }
-
-        .cart-item-remove {
-            background: none;
-            border: none;
-            color: #999;
-            cursor: pointer;
-            margin-left: auto;
-            transition: var(--transition);
-        }
-
-        .cart-item-remove:hover {
-            color: #ff4757;
-        }
-
-        .cart-footer {
-            padding: 1.5rem 2rem;
-            border-top: 1px solid #eee;
-            background: var(--gray);
-        }
-
-        .cart-total {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .cart-total span:last-child {
-            color: var(--gold);
-        }
-
-        .btn-checkout {
-            width: 100%;
-            background: var(--gold);
-            color: var(--primary);
-            border: none;
-            padding: 1rem;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .btn-checkout:hover {
-            background: var(--primary);
-            color: var(--gold);
-        }
-
-        .cart-empty {
-            text-align: center;
-            padding: 3rem;
-            color: #999;
-        }
-
-        .cart-empty i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: #ddd;
-        }
-
-        /* WhatsApp Float */
-        .whatsapp-float {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: #25d366;
-            color: var(--white);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            text-decoration: none;
-            box-shadow: 0 5px 20px rgba(37,211,102,0.4);
-            z-index: 999;
-            transition: var(--transition);
-            animation: pulse 2s infinite;
-        }
-
-        .whatsapp-float:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 30px rgba(37,211,102,0.6);
-        }
-
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 5px 20px rgba(37,211,102,0.4); }
-            50% { box-shadow: 0 5px 30px rgba(37,211,102,0.7); }
-        }
-
-        /* Mobile Menu */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--primary);
-        }
-
-        /* Responsive */
-        @media (max-width: 968px) {
-            .nav-links {
-                display: none;
-            }
-            .mobile-menu-btn {
-                display: block;
-            }
-            .hero-title {
-                font-size: 3rem;
-            }
-            .about-container,
-            .contact-grid {
-                grid-template-columns: 1fr;
-            }
-            .footer-container {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-            .footer-container {
-                grid-template-columns: 1fr;
-            }
-            .cart-sidebar {
-                width: 100%;
-            }
-        }
-
-        /* Toast Notification */
-        .toast {
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: var(--primary);
-            color: var(--white);
-            padding: 1rem 2rem;
-            border-radius: 0;
-            z-index: 3000;
-            opacity: 0;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: 500;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .toast i {
-            color: var(--gold);
-        }
-
-        /* Scroll animations */
-        .scroll-reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
-        }
-
-        .scroll-reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHERI STYLE - Mode Haitienne</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{--primary:#1a1a1a;--gold:#d4af37;--white:#ffffff;--transition:all 0.4s cubic-bezier(0.4,0,0.2,1)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{font-family:"Poppins",sans-serif;background:var(--primary);color:var(--white);overflow-x:hidden;min-height:100vh;scroll-behavior:smooth}
+.loader-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--primary);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity 0.8s ease,visibility 0.8s ease}
+.loader-overlay.hidden{opacity:0;visibility:hidden}
+.loader-text{font-family:"Playfair Display",serif;font-size:2.5rem;color:var(--gold);letter-spacing:4px;animation:loaderPulse 1.5s ease infinite}
+.loader-bar{width:200px;height:2px;background:rgba(212,175,55,0.2);margin-top:20px;position:relative;overflow:hidden}
+.loader-bar::after{content:"";position:absolute;left:-100%;width:100%;height:100%;background:var(--gold);animation:loaderSlide 1.5s ease infinite}
+@keyframes loaderPulse{0%,100%{opacity:1}50%{opacity:0.5}}
+@keyframes loaderSlide{0%{left:-100%}100%{left:100%}}
+header{position:fixed;top:0;width:100%;z-index:1000;background:rgba(26,26,26,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(212,175,55,0.2);transition:var(--transition)}
+header.scrolled{box-shadow:0 10px 40px rgba(0,0,0,0.3);background:rgba(26,26,26,0.98)}
+.nav-container{max-width:1400px;margin:0 auto;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:"Playfair Display",serif;font-size:2rem;font-weight:900;color:var(--white);text-decoration:none;letter-spacing:2px}
+.logo span{color:var(--gold)}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{text-decoration:none;color:var(--white);font-weight:500;font-size:0.9rem;text-transform:uppercase;letter-spacing:1px;position:relative;transition:var(--transition)}
+.nav-links a::after{content:"";position:absolute;bottom:-5px;left:0;width:0;height:2px;background:var(--gold);transition:var(--transition)}
+.nav-links a:hover::after{width:100%}
+.nav-links a:hover{color:var(--gold)}
+.header-icons{display:flex;gap:1.5rem;align-items:center}
+.header-icons a{color:var(--white);font-size:1.2rem;transition:var(--transition);position:relative}
+.header-icons a:hover{color:var(--gold);transform:scale(1.1)}
+.cart-count{position:absolute;top:-8px;right:-8px;background:var(--gold);color:var(--primary);font-size:0.7rem;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+.mobile-menu-btn{display:none;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--white)}
+.mobile-nav{position:fixed;top:0;right:-100%;width:300px;height:100vh;background:#1a1a1a;z-index:1001;padding:2rem;transition:var(--transition);border-left:1px solid rgba(212,175,55,0.2)}
+.mobile-nav.active{right:0}
+.mobile-nav-close{background:none;border:none;color:var(--white);font-size:1.5rem;cursor:pointer;margin-bottom:2rem}
+.mobile-nav-links{list-style:none}
+.mobile-nav-links li{margin-bottom:1.5rem}
+.mobile-nav-links a{color:var(--white);text-decoration:none;font-size:1.2rem;font-weight:600;transition:var(--transition)}
+.mobile-nav-links a:hover{color:var(--gold)}
+.mobile-nav-contact{margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.1)}
+.mobile-nav-contact p{color:rgba(255,255,255,0.6);font-size:0.9rem;margin-bottom:0.5rem}
+.mobile-nav-contact a{color:var(--gold);text-decoration:none;font-weight:600}
+.hero{height:100vh;background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 50%,#1a1a1a 100%);display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='none' stroke='rgba(212,175,55,0.1)' stroke-width='0.5'/></svg>");background-size:200px;animation:float 20s linear infinite}
+@keyframes float{0%{transform:translateY(0) rotate(0deg)}100%{transform:translateY(-100px) rotate(360deg)}}
+.hero-content{position:relative;z-index:2;max-width:800px;padding:0 2rem}
+.hero-subtitle{color:var(--gold);font-size:1rem;text-transform:uppercase;letter-spacing:4px;margin-bottom:1.5rem;animation:fadeInUp 1s ease}
+.hero-title{font-family:"Playfair Display",serif;font-size:5rem;font-weight:900;color:var(--white);line-height:1.1;margin-bottom:1.5rem;animation:fadeInUp 1s ease 0.2s both}
+.hero-title span{color:var(--gold);display:block}
+.hero-desc{color:rgba(255,255,255,0.7);font-size:1.1rem;line-height:1.8;margin-bottom:2.5rem;animation:fadeInUp 1s ease 0.4s both}
+.hero-btn{display:inline-flex;align-items:center;gap:0.5rem;background:var(--gold);color:var(--primary);padding:1rem 2.5rem;text-decoration:none;font-weight:600;text-transform:uppercase;letter-spacing:2px;border:2px solid var(--gold);transition:var(--transition);animation:fadeInUp 1s ease 0.6s both}
+.hero-btn:hover{background:transparent;color:var(--gold);transform:translateY(-3px);box-shadow:0 10px 30px rgba(212,175,55,0.3)}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.stats-bar{background:linear-gradient(135deg,var(--gold) 0%,#b8960c 100%);padding:2rem;display:grid;grid-template-columns:repeat(4,1fr);max-width:1200px;margin:-3rem auto 0;position:relative;z-index:10;box-shadow:0 10px 40px rgba(212,175,55,0.3)}
+.stat-item{text-align:center;color:var(--primary);padding:1rem;border-right:1px solid rgba(0,0,0,0.1)}
+.stat-item:last-child{border-right:none}
+.stat-number{font-family:"Playfair Display",serif;font-size:2.5rem;font-weight:900;display:block}
+.stat-label{font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;font-weight:600}
+.products-section{padding:6rem 2rem;max-width:1400px;margin:0 auto;background:var(--primary)}
+.section-header{text-align:center;margin-bottom:4rem}
+.section-subtitle{color:var(--gold);text-transform:uppercase;letter-spacing:3px;font-size:0.9rem;margin-bottom:1rem}
+.section-title{font-family:"Playfair Display",serif;font-size:3rem;font-weight:700;color:var(--white)}
+.section-title::after{content:"";display:block;width:60px;height:3px;background:var(--gold);margin:1rem auto}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:2.5rem}
+.product-card{background:#252525;border-radius:0;overflow:hidden;box-shadow:0 5px 20px rgba(0,0,0,0.3);transition:var(--transition);position:relative;border:1px solid rgba(212,175,55,0.1)}
+.product-card:hover{transform:translateY(-10px);box-shadow:0 20px 40px rgba(0,0,0,0.4);border-color:rgba(212,175,55,0.3)}
+.product-badge{position:absolute;top:1rem;left:1rem;background:var(--gold);color:var(--primary);padding:0.4rem 1rem;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;z-index:10}
+.product-image{width:100%;height:350px;object-fit:cover;transition:var(--transition)}
+.product-card:hover .product-image{transform:scale(1.05)}
+.product-info{padding:1.5rem 2rem;background:#252525}
+.product-category{color:var(--gold);font-size:0.8rem;text-transform:uppercase;letter-spacing:2px;margin-bottom:0.5rem}
+.product-name{font-family:"Playfair Display",serif;font-size:1.4rem;font-weight:700;margin-bottom:0.5rem;color:var(--white)}
+.product-price{font-size:1.5rem;font-weight:700;color:var(--gold);margin-bottom:1rem}
+.product-price span{font-size:0.9rem;color:#888;text-decoration:line-through;margin-left:0.5rem}
+.product-actions{display:flex;gap:0.5rem}
+.btn-add-cart{flex:1;background:var(--gold);color:var(--primary);border:none;padding:0.8rem;font-family:"Poppins",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:var(--transition);display:flex;align-items:center;justify-content:center;gap:0.5rem}
+.btn-add-cart:hover{background:var(--white);color:var(--primary)}
+.btn-wishlist{width:45px;height:45px;border:1px solid rgba(255,255,255,0.2);background:transparent;color:var(--white);cursor:pointer;transition:var(--transition);display:flex;align-items:center;justify-content:center}
+.btn-wishlist:hover,.btn-wishlist.active{background:#ff4757;color:var(--white);border-color:#ff4757}
+.product-colors{display:flex;gap:0.5rem;margin-bottom:1rem}
+.color-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:var(--transition)}
+.color-dot:hover,.color-dot.active{border-color:var(--gold);transform:scale(1.2)}
+.product-rating{display:flex;gap:0.2rem;margin-bottom:0.5rem;color:var(--gold);font-size:0.85rem}
+.product-reviews{color:rgba(255,255,255,0.5);font-size:0.8rem;margin-left:0.5rem}
+.categories-section{background:#1f1f1f;padding:6rem 2rem}
+.categories-container{max-width:1400px;margin:0 auto}
+.categories-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;margin-top:3rem}
+.category-card{position:relative;overflow:hidden;height:300px;cursor:pointer}
+.category-card img{width:100%;height:100%;object-fit:cover;transition:var(--transition);filter:brightness(0.7)}
+.category-card:hover img{transform:scale(1.1);filter:brightness(0.5)}
+.category-overlay{position:absolute;bottom:0;left:0;right:0;padding:2rem;background:linear-gradient(transparent,rgba(0,0,0,0.8))}
+.category-name{font-family:"Playfair Display",serif;font-size:1.5rem;color:var(--white);margin-bottom:0.5rem}
+.category-count{color:var(--gold);font-size:0.9rem}
+.about-section{background:#1f1f1f;padding:6rem 2rem}
+.about-container{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.about-image{position:relative}
+.about-image img{width:100%;height:500px;object-fit:cover;box-shadow:20px 20px 0 var(--gold)}
+.about-content h2{font-family:"Playfair Display",serif;font-size:2.5rem;margin-bottom:1.5rem;color:var(--white)}
+.about-content p{color:rgba(255,255,255,0.7);line-height:1.8;margin-bottom:1.5rem}
+.about-features{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem}
+.feature-item{display:flex;align-items:flex-start;gap:1rem}
+.feature-icon{width:50px;height:50px;background:var(--gold);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.feature-text h4{font-weight:600;margin-bottom:0.3rem;color:var(--white)}
+.feature-text p{font-size:0.85rem;color:rgba(255,255,255,0.6);margin:0}
+.testimonials-section{background:var(--primary);padding:6rem 2rem}
+.testimonials-container{max-width:1400px;margin:0 auto}
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem}
+.testimonial-card{background:#252525;padding:2.5rem;border:1px solid rgba(212,175,55,0.1);transition:var(--transition)}
+.testimonial-card:hover{border-color:rgba(212,175,55,0.3);transform:translateY(-5px)}
+.testimonial-stars{color:var(--gold);margin-bottom:1rem;font-size:0.9rem}
+.testimonial-text{color:rgba(255,255,255,0.7);line-height:1.8;margin-bottom:1.5rem;font-style:italic}
+.testimonial-author{display:flex;align-items:center;gap:1rem}
+.testimonial-avatar{width:50px;height:50px;border-radius:50%;object-fit:cover;border:2px solid var(--gold)}
+.testimonial-name{font-weight:600;color:var(--white)}
+.testimonial-role{color:var(--gold);font-size:0.85rem}
+.how-to-order{background:#1f1f1f;padding:6rem 2rem}
+.how-to-order-container{max-width:1400px;margin:0 auto}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;margin-top:3rem;position:relative}
+.steps-grid::before{content:"";position:absolute;top:40px;left:12.5%;right:12.5%;height:2px;background:rgba(212,175,55,0.2);z-index:0}
+.step-item{text-align:center;position:relative;z-index:1}
+.step-number{width:80px;height:80px;background:var(--gold);color:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-size:1.8rem;font-weight:900;margin:0 auto 1.5rem;border:4px solid #1f1f1f}
+.step-title{font-weight:600;color:var(--white);margin-bottom:0.5rem}
+.step-desc{color:rgba(255,255,255,0.6);font-size:0.9rem;line-height:1.6}
+.faq-section{background:var(--primary);padding:6rem 2rem}
+.faq-container{max-width:900px;margin:0 auto}
+.faq-item{border-bottom:1px solid rgba(255,255,255,0.1);overflow:hidden}
+.faq-question{width:100%;padding:1.5rem 0;background:none;border:none;color:var(--white);font-family:"Poppins",sans-serif;font-size:1.1rem;font-weight:600;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:var(--transition)}
+.faq-question:hover{color:var(--gold)}
+.faq-question i{transition:var(--transition);color:var(--gold)}
+.faq-question.active i{transform:rotate(180deg)}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height 0.4s ease}
+.faq-answer.active{max-height:200px}
+.faq-answer p{color:rgba(255,255,255,0.6);line-height:1.8;padding-bottom:1.5rem;padding-right:2rem}
+.contact-section{padding:6rem 2rem;max-width:1400px;margin:0 auto;background:var(--primary)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem}
+.contact-info h3{font-family:"Playfair Display",serif;font-size:2rem;margin-bottom:1.5rem;color:var(--white)}
+.contact-item{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.5rem}
+.contact-item i{width:45px;height:45px;background:var(--gold);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.contact-item h4{font-weight:600;margin-bottom:0.3rem;color:var(--white)}
+.contact-item p{color:rgba(255,255,255,0.6);font-size:0.9rem}
+.contact-item a{color:var(--gold);text-decoration:none;transition:var(--transition)}
+.contact-item a:hover{text-decoration:underline}
+.contact-form{background:#252525;padding:3rem;border:1px solid rgba(212,175,55,0.1)}
+.form-group{margin-bottom:1.5rem}
+.form-group label{display:block;font-weight:600;margin-bottom:0.5rem;font-size:0.9rem;text-transform:uppercase;letter-spacing:1px;color:var(--white)}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:1rem;border:1px solid rgba(255,255,255,0.1);font-family:"Poppins",sans-serif;font-size:0.95rem;transition:var(--transition);background:#1a1a1a;color:var(--white)}
+.form-group input::placeholder,.form-group textarea::placeholder{color:rgba(255,255,255,0.4)}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,0.1)}
+.form-group textarea{resize:vertical;min-height:120px}
+.btn-submit{width:100%;background:var(--gold);color:var(--primary);border:none;padding:1rem;font-family:"Poppins",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:var(--transition)}
+.btn-submit:hover{background:var(--white);color:var(--primary)}
+.map-section{background:#1f1f1f;padding:0}
+.map-container{width:100%;height:400px;background:#2d2d2d;display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative;overflow:hidden}
+.map-icon{font-size:3rem;color:var(--gold);margin-bottom:1rem}
+.map-text{color:var(--white);font-size:1.2rem;font-weight:600}
+.map-address{color:rgba(255,255,255,0.6);margin-top:0.5rem}
+.map-btn{margin-top:1.5rem;padding:0.8rem 2rem;background:var(--gold);color:var(--primary);text-decoration:none;font-weight:600;transition:var(--transition)}
+.map-btn:hover{background:var(--white)}
+.newsletter-section{background:linear-gradient(135deg,var(--gold) 0%,#b8960c 100%);padding:4rem 2rem;text-align:center}
+.newsletter-container{max-width:600px;margin:0 auto}
+.newsletter-title{font-family:"Playfair Display",serif;font-size:2rem;color:var(--primary);margin-bottom:1rem}
+.newsletter-desc{color:rgba(0,0,0,0.7);margin-bottom:2rem}
+.newsletter-form{display:flex;gap:0}
+.newsletter-input{flex:1;padding:1rem 1.5rem;border:none;font-family:"Poppins",sans-serif;font-size:1rem;background:var(--white)}
+.newsletter-input:focus{outline:none}
+.newsletter-btn{padding:1rem 2rem;background:var(--primary);color:var(--gold);border:none;font-family:"Poppins",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:var(--transition)}
+.newsletter-btn:hover{background:#000;color:var(--white)}
+footer{background:#0f0f0f;color:var(--white);padding:4rem 2rem 2rem;border-top:1px solid rgba(212,175,55,0.1)}
+.footer-container{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+.footer-brand h3{font-family:"Playfair Display",serif;font-size:1.8rem;margin-bottom:1rem;color:var(--white)}
+.footer-brand h3 span{color:var(--gold)}
+.footer-brand p{color:rgba(255,255,255,0.5);line-height:1.8;margin-bottom:1.5rem}
+.social-links{display:flex;gap:1rem}
+.social-links a{width:40px;height:40px;border:1px solid rgba(255,255,255,0.2);color:var(--white);display:flex;align-items:center;justify-content:center;transition:var(--transition)}
+.social-links a:hover{background:var(--gold);border-color:var(--gold);color:var(--primary)}
+.footer-links h4{font-weight:600;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:2px;font-size:0.9rem;color:var(--white)}
+.footer-links ul{list-style:none}
+.footer-links li{margin-bottom:0.8rem}
+.footer-links a{color:rgba(255,255,255,0.5);text-decoration:none;transition:var(--transition);font-size:0.9rem}
+.footer-links a:hover{color:var(--gold);padding-left:5px}
+.footer-contact p{color:rgba(255,255,255,0.5);font-size:0.9rem;margin-bottom:0.5rem}
+.footer-contact a{color:var(--gold);text-decoration:none}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.1);padding-top:2rem;text-align:center;color:rgba(255,255,255,0.3);font-size:0.85rem}
+.cart-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:2000;opacity:0;visibility:hidden;transition:var(--transition)}
+.cart-overlay.active{opacity:1;visibility:visible}
+.cart-sidebar{position:fixed;top:0;right:-450px;width:450px;max-width:100%;height:100vh;background:#1a1a1a;z-index:2001;transition:var(--transition);display:flex;flex-direction:column;border-left:1px solid rgba(212,175,55,0.1)}
+.cart-sidebar.active{right:0}
+.cart-header{padding:1.5rem 2rem;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;justify-content:space-between;align-items:center}
+.cart-header h3{font-family:"Playfair Display",serif;font-size:1.5rem;color:var(--white)}
+.cart-close{background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--white);transition:var(--transition)}
+.cart-close:hover{color:var(--gold);transform:rotate(90deg)}
+.cart-items{flex:1;overflow-y:auto;padding:1rem 2rem}
+.cart-item{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid rgba(255,255,255,0.1)}
+.cart-item img{width:80px;height:80px;object-fit:cover}
+.cart-item-info h4{font-weight:600;margin-bottom:0.3rem;color:var(--white)}
+.cart-item-price{color:var(--gold);font-weight:700}
+.cart-item-qty{display:flex;align-items:center;gap:0.5rem;margin-top:0.5rem}
+.qty-btn{width:25px;height:25px;background:rgba(255,255,255,0.1);border:none;color:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.8rem}
+.qty-btn:hover{background:var(--gold);color:var(--primary)}
+.cart-item-remove{background:none;border:none;color:#666;cursor:pointer;margin-left:auto;transition:var(--transition)}
+.cart-item-remove:hover{color:#ff4757}
+.cart-footer{padding:1.5rem 2rem;border-top:1px solid rgba(255,255,255,0.1);background:#252525}
+.cart-total{display:flex;justify-content:space-between;font-size:1.2rem;font-weight:700;margin-bottom:1rem;color:var(--white)}
+.cart-total span:last-child{color:var(--gold)}
+.btn-checkout{width:100%;background:var(--gold);color:var(--primary);border:none;padding:1rem;font-family:"Poppins",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:var(--transition);margin-bottom:0.5rem}
+.btn-checkout:hover{background:var(--white);color:var(--primary)}
+.btn-continue{width:100%;background:transparent;color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.2);padding:0.8rem;font-family:"Poppins",sans-serif;cursor:pointer;transition:var(--transition)}
+.btn-continue:hover{border-color:var(--gold);color:var(--gold)}
+.cart-empty{text-align:center;padding:3rem;color:#666}
+.cart-empty i{font-size:3rem;margin-bottom:1rem;color:#444}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:3000;opacity:0;visibility:hidden;transition:var(--transition);display:flex;align-items:center;justify-content:center;padding:2rem}
+.modal-overlay.active{opacity:1;visibility:visible}
+.modal-content{background:#1a1a1a;max-width:900px;width:100%;display:grid;grid-template-columns:1fr 1fr;position:relative;border:1px solid rgba(212,175,55,0.2)}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--white);font-size:1.5rem;cursor:pointer;z-index:10;transition:var(--transition)}
+.modal-close:hover{color:var(--gold);transform:rotate(90deg)}
+.modal-image img{width:100%;height:100%;object-fit:cover}
+.modal-info{padding:3rem;display:flex;flex-direction:column;justify-content:center}
+.modal-category{color:var(--gold);text-transform:uppercase;letter-spacing:2px;font-size:0.85rem;margin-bottom:1rem}
+.modal-name{font-family:"Playfair Display",serif;font-size:2rem;color:var(--white);margin-bottom:1rem}
+.modal-price{font-size:2rem;color:var(--gold);font-weight:700;margin-bottom:1.5rem}
+.modal-desc{color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:2rem}
+.modal-actions{display:flex;gap:1rem}
+.modal-btn-cart{flex:1;background:var(--gold);color:var(--primary);border:none;padding:1rem;font-family:"Poppins",sans-serif;font-weight:600;text-transform:uppercase;cursor:pointer;transition:var(--transition)}
+.modal-btn-cart:hover{background:var(--white)}
+.modal-btn-wishlist{width:50px;height:50px;border:1px solid rgba(255,255,255,0.2);background:transparent;color:var(--white);cursor:pointer;transition:var(--transition)}
+.modal-btn-wishlist:hover{background:#ff4757;border-color:#ff4757}
+.whatsapp-float{position:fixed;bottom:30px;right:30px;width:60px;height:60px;background:#25d366;color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;text-decoration:none;box-shadow:0 5px 20px rgba(37,211,102,0.4);z-index:999;transition:var(--transition);animation:pulse 2s infinite}
+.whatsapp-float:hover{transform:scale(1.1);box-shadow:0 8px 30px rgba(37,211,102,0.6)}
+@keyframes pulse{0%,100%{box-shadow:0 5px 20px rgba(37,211,102,0.4)}50%{box-shadow:0 5px 30px rgba(37,211,102,0.7)}}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--gold);color:var(--primary);padding:1rem 2rem;border-radius:0;z-index:3000;opacity:0;transition:var(--transition);display:flex;align-items:center;gap:0.5rem;font-weight:600}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast i{color:var(--primary)}
+.scroll-top{position:fixed;bottom:100px;right:30px;width:45px;height:45px;background:var(--gold);color:var(--primary);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;z-index:998;opacity:0;visibility:hidden;transition:var(--transition)}
+.scroll-top.visible{opacity:1;visibility:visible}
+.scroll-top:hover{background:var(--white)}
+.scroll-reveal{opacity:0;transform:translateY(30px);transition:all 0.8s ease}
+.scroll-reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:968px){.nav-links{display:none}.mobile-menu-btn{display:block}.hero-title{font-size:3rem}.about-container,.contact-grid,.modal-content{grid-template-columns:1fr}.footer-container,.categories-grid,.testimonials-grid,.steps-grid{grid-template-columns:1fr 1fr}.stats-bar{grid-template-columns:repeat(2,1fr)}.steps-grid::before{display:none}}
+@media(max-width:576px){.hero-title{font-size:2.5rem}.products-grid,.categories-grid,.testimonials-grid,.steps-grid,.stats-bar,.footer-container{grid-template-columns:1fr}.cart-sidebar{width:100%}.newsletter-form{flex-direction:column}}
+</style>
 <base target="_blank">
 </head>
 <body>
-    <!-- Header -->
-    <header id="header">
-        <div class="nav-container">
-            <a href="#" class="logo">CHERI <span>STYLE</span></a>
-            <ul class="nav-links">
-                <li><a href="#home">Accueil</a></li>
-                <li><a href="#products">Produits</a></li>
-                <li><a href="#about">À Propos</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <div class="header-icons">
-                <a href="#" onclick="toggleCart(event)"><i class="fas fa-shopping-bag"></i><span class="cart-count" id="cartCount">0</span></a>
-                <a href="#"><i class="fas fa-search"></i></a>
-                <a href="#"><i class="fas fa-user"></i></a>
-            </div>
-            <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
-        </div>
-    </header>
+<div class="loader-overlay" id="loader"><div class="loader-text">CHERI STYLE</div><div class="loader-bar"></div></div>
+<header id="header"><div class="nav-container"><a href="#" class="logo">CHERI <span>STYLE</span></a><ul class="nav-links"><li><a href="#home">Accueil</a></li><li><a href="#products">Produits</a></li><li><a href="#about">A Propos</a></li><li><a href="#faq">FAQ</a></li><li><a href="#contact">Contact</a></li></ul><div class="header-icons"><a href="#" onclick="toggleCart(event)"><i class="fas fa-shopping-bag"></i><span class="cart-count" id="cartCount">0</span></a><a href="#" onclick="openSearch(event)"><i class="fas fa-search"></i></a><a href="#"><i class="fas fa-user"></i></a></div><button class="mobile-menu-btn" onclick="toggleMobileNav()"><i class="fas fa-bars"></i></button></div></header>
+<div class="mobile-nav" id="mobileNav"><button class="mobile-nav-close" onclick="toggleMobileNav()"><i class="fas fa-times"></i></button><ul class="mobile-nav-links"><li><a href="#home" onclick="toggleMobileNav()">Accueil</a></li><li><a href="#products" onclick="toggleMobileNav()">Produits</a></li><li><a href="#about" onclick="toggleMobileNav()">A Propos</a></li><li><a href="#faq" onclick="toggleMobileNav()">FAQ</a></li><li><a href="#contact" onclick="toggleMobileNav()">Contact</a></li></ul><div class="mobile-nav-contact"><p>Besoin d'aide?</p><a href="tel:+50934232552">+509 3423-2552</a><p style="margin-top:1rem"><a href="https://wa.me/50934232552">WhatsApp</a></p></div></div>
+<section class="hero" id="home"><div class="hero-content"><p class="hero-subtitle">Nouvelle Collection 2026</p><h1 class="hero-title">CHERI <span>STYLE</span></h1><p class="hero-desc">Decouvrez notre selection exclusive de snapbacks et sandales de qualite. Le style haitien a son meilleur, livre a votre porte a Delmas 31.</p><a href="#products" class="hero-btn">Decouvrir <i class="fas fa-arrow-right"></i></a></div></section>
+<div class="stats-bar"><div class="stat-item"><span class="stat-number">500+</span><span class="stat-label">Clients Satisfaits</span></div><div class="stat-item"><span class="stat-number">50+</span><span class="stat-label">Produits Disponibles</span></div><div class="stat-item"><span class="stat-number">24h</span><span class="stat-label">Livraison Rapide</span></div><div class="stat-item"><span class="stat-number">100%</span><span class="stat-label">Qualite Garantie</span></div></div>
+<section class="products-section" id="products"><div class="section-header scroll-reveal"><p class="section-subtitle">Notre Collection</p><h2 class="section-title">Produits Populaires</h2></div><div class="products-grid">
+<div class="product-card scroll-reveal"><span class="product-badge">Best Seller</span><img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=500&h=500&fit=crop" alt="Snapback NY" class="product-image"><div class="product-info"><p class="product-category">Accessoires</p><div class="product-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><span class="product-reviews">(128 avis)</span></div><h3 class="product-name">Snapback Broderie NY</h3><div class="product-colors"><span class="color-dot active" style="background:#1a1a1a"></span><span class="color-dot" style="background:#8B0000"></span><span class="color-dot" style="background:#000080"></span><span class="color-dot" style="background:#fff;border:1px solid #333"></span></div><p class="product-price">2,500 HTG</p><div class="product-actions"><button class="btn-add-cart" onclick="addToCart('Snapback Broderie NY',2500,'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=100&h=100&fit=crop')"><i class="fas fa-shopping-bag"></i> Ajouter</button><button class="btn-wishlist" onclick="toggleWishlist(this)"><i class="fas fa-heart"></i></button></div></div></div>
+<div class="product-card scroll-reveal"><span class="product-badge" style="background:#ff4757">Nouveau</span><img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500&h=500&fit=crop" alt="Sandales" class="product-image"><div class="product-info"><p class="product-category">Chaussures</p><div class="product-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><span class="product-reviews">(85 avis)</span></div><h3 class="product-name">Sandales Elegantes</h3><div class="product-colors"><span class="color-dot active" style="background:#8B4513"></span><span class="color-dot" style="background:#000"></span><span class="color-dot" style="background:#D2691E"></span></div><p class="product-price">1,500 HTG</p><div class="product-actions"><button class="btn-add-cart" onclick="addToCart('Sandales Elegantes',1500,'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=100&h=100&fit=crop')"><i class="fas fa-shopping-bag"></i> Ajouter</button><button class="btn-wishlist" onclick="toggleWishlist(this)"><i class="fas fa-heart"></i></button></div></div></div>
+<div class="product-card scroll-reveal"><img src="https://images.unsplash.com/photo-1534215754734-18e55d13e346?w=500&h=500&fit=crop" alt="Snapback Classic" class="product-image"><div class="product-info"><p class="product-category">Accessoires</p><div class="product-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><span class="product-reviews">(64 avis)</span></div><h3 class="product-name">Snapback Classic Noir</h3><div class="product-colors"><span class="color-dot active" style="background:#000"></span><span class="color-dot" style="background:#333"></span><span class="color-dot" style="background:#1a1a1a"></span></div><p class="product-price">2,500 HTG</p><div class="product-actions"><button class="btn-add-cart" onclick="addToCart('Snapback Classic Noir',2500,'https://images.unsplash.com/photo-1534215754734-18e55d13e346?w=100&h=100&fit=crop')"><i class="fas fa-shopping-bag"></i> Ajouter</button><button class="btn-wishlist" onclick="toggleWishlist(this)"><i class="fas fa-heart"></i></button></div></div></div>
+<div class="product-card scroll-reveal"><span class="product-badge">Promo</span><img src="https://images.unsplash.com/photo-1603487742131-4160ec999306?w=500&h=500&fit=crop" alt="Sandales Premium" class="product-image"><div class="product-info"><p class="product-category">Chaussures</p><div class="product-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><span class="product-reviews">(92 avis)</span></div><h3 class="product-name">Sandales Premium Cuir</h3><div class="product-colors"><span class="color-dot active" style="background:#8B4513"></span><span class="color-dot" style="background:#000"></span><span class="color-dot" style="background:#654321"></span></div><p class="product-price">1,500 HTG <span>2,000 HTG</span></p><div class="product-actions"><button class="btn-add-cart" onclick="addToCart('Sandales Premium Cuir',1500,'https://images.unsplash.com/photo-1603487742131-4160ec999306?w=100&h=100&fit=crop')"><i class="fas fa-shopping-bag"></i> Ajouter</button><button class="btn-wishlist" onclick="toggleWishlist(this)"><i class="fas fa-heart"></i></button></div></div></div>
+</div></section>
+<section class="categories-section"><div class="categories-container"><div class="section-header scroll-reveal"><p class="section-subtitle">Explorer</p><h2 class="section-title">Nos Categories</h2></div><div class="categories-grid">
+<div class="category-card scroll-reveal"><img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=400&h=300&fit=crop" alt="Snapbacks"><div class="category-overlay"><div class="category-name">Snapbacks</div><div class="category-count">15+ modeles</div></div></div>
+<div class="category-card scroll-reveal"><img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400&h=300&fit=crop" alt="Sandales"><div class="category-overlay"><div class="category-name">Sandales</div><div class="category-count">20+ modeles</div></div></div>
+<div class="category-card scroll-reveal"><img src="https://images.unsplash.com/photo-1556906781-9a412961c28c?w=400&h=300&fit=crop" alt="Accessoires"><div class="category-overlay"><div class="category-name">Accessoires</div><div class="category-count">10+ articles</div></div></div>
+<div class="category-card scroll-reveal"><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop" alt="Nouveautes"><div class="category-overlay"><div class="category-name">Nouveautes</div><div class="category-count">Arrivages hebdo</div></div></div>
+</div></div></section>
+<section class="about-section" id="about"><div class="about-container"><div class="about-image scroll-reveal"><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&h=500&fit=crop" alt="CHERI STYLE Boutique"></div><div class="about-content scroll-reveal"><p class="section-subtitle">Notre Histoire</p><h2>Le Style Haitien,<br>Revisite avec Elegance</h2><p>CHERI STYLE est ne de la passion pour la mode haitienne contemporaine. Situe au coeur de Delmas 31, nous proposons des accessoires et chaussures qui allient qualite, style et prix accessible.</p><p>Chaque piece est selectionnee avec soin pour refleter l'elegance et la fierte de notre culture. Nous croyons que le style ne doit pas couter cher.</p><div class="about-features"><div class="feature-item"><div class="feature-icon"><i class="fas fa-shipping-fast"></i></div><div class="feature-text"><h4>Livraison Rapide</h4><p>Delmas 31 et environs</p></div></div><div class="feature-item"><div class="feature-icon"><i class="fas fa-shield-alt"></i></div><div class="feature-text"><h4>Qualite Garantie</h4><p>Produits soigneusement verifies</p></div></div><div class="feature-item"><div class="feature-icon"><i class="fas fa-hand-holding-usd"></i></div><div class="feature-text"><h4>Prix Justes</h4><p>Meilleur rapport qualite-prix</p></div></div><div class="feature-item"><div class="feature-icon"><i class="fas fa-headset"></i></div><div class="feature-text"><h4>Service Client</h4><p>Disponible 7j/7</p></div></div></div></div></div></section>
+<section class="testimonials-section"><div class="testimonials-container"><div class="section-header scroll-reveal"><p class="section-subtitle">Temoignages</p><h2 class="section-title">Ce que Disent Nos Clients</h2></div><div class="testimonials-grid">
+<div class="testimonial-card scroll-reveal"><div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="testimonial-text">"Les meilleures snapbacks que j'ai jamais achetees! La qualite est incroyable et le prix est tres raisonnable. Livraison rapide a Delmas 31."</p><div class="testimonial-author"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop" alt="Client" class="testimonial-avatar"><div><div class="testimonial-name">Jean-Pierre D.</div><div class="testimonial-role">Client fidele</div></div></div></div>
+<div class="testimonial-card scroll-reveal"><div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div><p class="testimonial-text">"J'adore les sandales! Confortables et elegantes. Le service client est excellent, ils repondent tres vite sur WhatsApp."</p><div class="testimonial-author"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" alt="Client" class="testimonial-avatar"><div><div class="testimonial-name">Marie L.</div><div class="testimonial-role">Cliente satisfaite</div></div></div></div>
+<div class="testimonial-card scroll-reveal"><div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="testimonial-text">"Commande par WhatsApp, livraison le jour meme. CHERI STYLE est devenu mon magasin prefere pour les accessoires de mode."</p><div class="testimonial-author"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop" alt="Client" class="testimonial-avatar"><div><div class="testimonial-name">Patrick M.</div><div class="testimonial-role">Client regulier</div></div></div></div>
+</div></div></section>
+<section class="how-to-order"><div class="how-to-order-container"><div class="section-header scroll-reveal"><p class="section-subtitle">Comment Commander</p><h2 class="section-title">Simple et Rapide</h2></div><div class="steps-grid">
+<div class="step-item scroll-reveal"><div class="step-number">1</div><div class="step-title">Choisissez</div><div class="step-desc">Parcourez notre collection et selectionnez vos produits preferes</div></div>
+<div class="step-item scroll-reveal"><div class="step-number">2</div><div class="step-title">Ajoutez</div><div class="step-desc">Ajoutez au panier ou contactez-nous directement sur WhatsApp</div></div>
+<div class="step-item scroll-reveal"><div class="step-number">3</div><div class="step-title">Confirmez</div><div class="step-desc">Nous confirmons votre commande et les details de livraison</div></div>
+<div class="step-item scroll-reveal"><div class="step-number">4</div><div class="step-title">Recevez</div><div class="step-desc">Livraison rapide a Delmas 31 et paiement a la livraison</div></div>
+</div></div></section>
+<section class="faq-section" id="faq"><div class="faq-container"><div class="section-header scroll-reveal"><p class="section-subtitle">Questions</p><h2 class="section-title">FAQ - Questions Frequentes</h2></div>
+<div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Comment passer une commande ? <i class="fas fa-chevron-down"></i></button><div class="faq-answer"><p>Vous pouvez passer commande directement via WhatsApp au +509 3423-2552 ou utiliser notre panier en ligne. Selectionnez vos produits, cliquez sur "Ajouter" puis "Commander via WhatsApp".</p></div></div>
+<div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Quels sont les delais de livraison ? <i class="fas fa-chevron-down"></i></button><div class="faq-answer"><p>Nous livrons dans un delai de 24 a 48 heures a Delmas 31 et ses environs. Pour les autres zones de Port-au-Prince, le delai peut etre de 2 a 3 jours.</p></div></div>
+<div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Quels modes de paiement acceptez-vous ? <i class="fas fa-chevron-down"></i></button><div class="faq-answer"><p>Nous acceptons le paiement en especes a la livraison, MonCash, et les transferts bancaires. Le paiement se fait lors de la reception de votre commande.</p></div></div>
+<div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Puis-je retourner un produit ? <i class="fas fa-chevron-down"></i></button><div class="faq-answer"><p>Oui, vous disposez de 7 jours pour retourner un produit s'il ne vous convient pas, a condition qu'il soit dans son emballage d'origine et non utilise.</p></div></div>
+<div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Proposez-vous des reductions pour les achats en gros ? <i class="fas fa-chevron-down"></i></button><div class="faq-answer"><p>Oui! Pour les commandes de 5 articles ou plus, nous offrons une remise de 10%. Contactez-nous sur WhatsApp pour les commandes en gros.</p></div></div>
+</div></section>
+<section class="contact-section" id="contact"><div class="section-header scroll-reveal"><p class="section-subtitle">Contactez-Nous</p><h2 class="section-title">Restons en Contact</h2></div><div class="contact-grid"><div class="contact-info scroll-reveal"><h3>Informations de Contact</h3><p style="color:rgba(255,255,255,0.6);margin-bottom:2rem;">N'hesitez pas a nous contacter pour toute question ou commande speciale. Nous sommes la pour vous aider!</p><div class="contact-item"><i class="fas fa-map-marker-alt"></i><div><h4>Adresse</h4><p>Delmas 31, Haiti</p></div></div><div class="contact-item"><i class="fas fa-phone"></i><div><h4>Telephone</h4><p><a href="tel:+50934232552">+509 3423-2552</a></p></div></div><div class="contact-item"><i class="fab fa-whatsapp"></i><div><h4>WhatsApp</h4><p><a href="https://wa.me/50934232552">+509 3423-2552</a></p></div></div><div class="contact-item"><i class="fas fa-envelope"></i><div><h4>Email</h4><p><a href="mailto:cheristyle@email.com">cheristyle@email.com</a></p></div></div><div class="contact-item"><i class="fas fa-clock"></i><div><h4>Horaires</h4><p>Lun - Sam: 8h00 - 18h00</p></div></div></div><div class="contact-form scroll-reveal"><form onsubmit="handleSubmit(event)"><div class="form-group"><label>Nom Complet</label><input type="text" placeholder="Votre nom" required></div><div class="form-group"><label>Telephone</label><input type="tel" placeholder="+509 XXXX XXXX" required></div><div class="form-group"><label>Email</label><input type="email" placeholder="votre@email.com"></div><div class="form-group"><label>Sujet</label><select><option>Commande</option><option>Information</option><option>Reclamation</option><option>Autre</option></select></div><div class="form-group"><label>Message</label><textarea placeholder="Votre message..." required></textarea></div><button type="submit" class="btn-submit">Envoyer le Message</button></form></div></div></section>
+<section class="map-section"><div class="map-container"><i class="fas fa-map-marker-alt map-icon"></i><div class="map-text">Notre Localisation</div><div class="map-address">Delmas 31, Port-au-Prince, Haiti</div><a href="https://maps.google.com/?q=Delmas+31,Haiti" class="map-btn" target="_blank">Voir sur Google Maps</a></div></section>
+<section class="newsletter-section"><div class="newsletter-container"><h2 class="newsletter-title">Restez Informe</h2><p class="newsletter-desc">Inscrivez-vous pour recevoir nos nouveautes et offres exclusives</p><form class="newsletter-form" onsubmit="handleNewsletter(event)"><input type="email" class="newsletter-input" placeholder="Votre adresse email" required><button type="submit" class="newsletter-btn">S'inscrire</button></form></div></section>
+<footer><div class="footer-container"><div class="footer-brand"><h3>CHERI <span>STYLE</span></h3><p>Votre destination mode a Delmas 31. Snapbacks, sandales et accessoires de qualite pour un style qui vous ressemble.</p><div class="social-links"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="https://wa.me/50934232552"><i class="fab fa-whatsapp"></i></a><a href="#"><i class="fab fa-tiktok"></i></a></div></div><div class="footer-links"><h4>Liens Rapides</h4><ul><li><a href="#home">Accueil</a></li><li><a href="#products">Produits</a></li><li><a href="#about">A Propos</a></li><li><a href="#contact">Contact</a></li></ul></div><div class="footer-links"><h4>Produits</h4><ul><li><a href="#">Snapbacks</a></li><li><a href="#">Sandales</a></li><li><a href="#">Nouveautes</a></li><li><a href="#">Promotions</a></li></ul></div><div class="footer-links"><h4>Contact</h4><div class="footer-contact"><p>Delmas 31, Haiti</p><p><a href="tel:+50934232552">+509 3423-2552</a></p><p><a href="https://wa.me/50934232552">WhatsApp</a></p><p><a href="mailto:cheristyle@email.com">cheristyle@email.com</a></p></div></div></div><div class="footer-bottom"><p>2026 CHERI STYLE. Tous droits reserves. | Delmas 31, Haiti</p></div></footer>
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart(event)"></div><div class="cart-sidebar" id="cartSidebar"><div class="cart-header"><h3>Votre Panier</h3><button class="cart-close" onclick="toggleCart(event)"><i class="fas fa-times"></i></button></div><div class="cart-items" id="cartItems"><div class="cart-empty"><i class="fas fa-shopping-bag"></i><p>Votre panier est vide</p></div></div><div class="cart-footer" id="cartFooter" style="display:none"><div class="cart-total"><span>Total:</span><span id="cartTotal">0 HTG</span></div><button class="btn-checkout" onclick="checkout()">Commander via WhatsApp</button><button class="btn-continue" onclick="toggleCart(event)">Continuer les achats</button></div></div>
+<a href="https://wa.me/50934232552" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<button class="scroll-top" id="scrollTop" onclick="scrollToTop()"><i class="fas fa-arrow-up"></i></button>
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMessage">Produit ajoute au panier!</span></div>
+<script>
+let cart=[];
+function addToCart(name,price,image){const existingItem=cart.find(item=>item.name===name);if(existingItem){existingItem.quantity++}else{cart.push({name,price,image,quantity:1})}updateCartUI();showToast("Produit ajoute au panier!")}
+function removeFromCart(index){cart.splice(index,1);updateCartUI()}
+function updateQty(index,delta){if(cart[index].quantity+delta>0){cart[index].quantity+=delta;updateCartUI()}else if(cart[index].quantity+delta===0){removeFromCart(index)}}
+function updateCartUI(){const cartItems=document.getElementById("cartItems");const cartCount=document.getElementById("cartCount");const cartFooter=document.getElementById("cartFooter");const cartTotal=document.getElementById("cartTotal");const totalItems=cart.reduce((sum,item)=>sum+item.quantity,0);cartCount.textContent=totalItems;if(cart.length===0){cartItems.innerHTML='<div class="cart-empty"><i class="fas fa-shopping-bag"></i><p>Votre panier est vide</p></div>';cartFooter.style.display="none"}else{cartItems.innerHTML=cart.map((item,index)=>`<div class="cart-item"><img src="${item.image}" alt="${item.name}"><div class="cart-item-info"><h4>${item.name}</h4><p class="cart-item-price">${item.price.toLocaleString()} HTG</p><div class="cart-item-qty"><button class="qty-btn" onclick="updateQty(${index},-1)">-</button><span>${item.quantity}</span><button class="qty-btn" onclick="updateQty(${index},1)">+</button></div></div><button class="cart-item-remove" onclick="removeFromCart(${index})"><i class="fas fa-trash"></i></button></div>`).join("");cartFooter.style.display="block";const total=cart.reduce((sum,item)=>sum+(item.price*item.quantity),0);cartTotal.textContent=total.toLocaleString()+" HTG"}}
+function toggleCart(event){if(event)event.preventDefault();document.getElementById("cartOverlay").classList.toggle("active");document.getElementById("cartSidebar").classList.toggle("active")}
+function checkout(){if(cart.length===0)return;let message="Bonjour CHERI STYLE! Je voudrais commander:
 
-    <!-- Hero -->
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <p class="hero-subtitle">Nouvelle Collection 2026</p>
-            <h1 class="hero-title">CHERI <span>STYLE</span></h1>
-            <p class="hero-desc">Découvrez notre sélection exclusive de snapbacks et sandales de qualité. Le style haïtien à son meilleur, livré à votre porte à Delmas 31.</p>
-            <a href="#products" class="hero-btn">Découvrir <i class="fas fa-arrow-right"></i></a>
-        </div>
-    </section>
-
-    <!-- Products -->
-    <section class="products-section" id="products">
-        <div class="section-header scroll-reveal">
-            <p class="section-subtitle">Notre Collection</p>
-            <h2 class="section-title">Produits Populaires</h2>
-        </div>
-        <div class="products-grid">
-            <!-- Product 1: Snapback -->
-            <div class="product-card scroll-reveal">
-                <span class="product-badge">Best Seller</span>
-                <img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=500&h=500&fit=crop" alt="Snapback NY" class="product-image">
-                <div class="product-info">
-                    <p class="product-category">Accessoires</p>
-                    <h3 class="product-name">Snapback Broderie NY</h3>
-                    <p class="product-price">2,500 HTG</p>
-                    <div class="product-actions">
-                        <button class="btn-add-cart" onclick="addToCart('Snapback Broderie NY', 2500, 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=100&h=100&fit=crop')">
-                            <i class="fas fa-shopping-bag"></i> Ajouter
-                        </button>
-                        <button class="btn-wishlist" onclick="toggleWishlist(this)"><i class="fas fa-heart"></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 2: Sandals -->
-            <div class="product-card scroll-reveal">
-                <span class="product-badge" style="background: #ff4757;">Nouveau</span>
-                <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500&h=500&fit=crop" alt="Sandales" class="product-image">
-                <div class="product-info">
-                    <p class="product-category">Chaussures</p>
-                    <h3 class="product-name">Sandales Élégantes</h3>
-                    <p class="product-price">1,500 HTG</p>
-                    <div class="product-actions">
-                        <button class="btn-add-cart" onclick="addToCart('Sandales Élégantes', 1500, 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=100&h=100&fit=crop')">
-                            <i class="fas fa-shopping-bag"></i> Ajouter
-                        </button>
-                        <button class="btn-wishlist" onclick="toggleWishlist(this)"><i class="fas fa-heart"></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 3: Snapback Classic -->
-            <div class="product-card scroll-reveal">
-                <img src="https://images.unsplash.com/photo-1534215754734-18e55d13e346?w=500&h=500&fit=crop" alt="Snapback Classic" class="product-image">
-                <div class="product-info">
-                    <p class="product-category">Accessoires</p>
-                    <h3 class="product-name">Snapback Classic Noir</h3>
-                    <p class="product-price">2,500 HTG</p>
-                    <div class="product-actions">
-                        <button class="btn-add-cart" onclick="addToCart('Snapback Classic Noir', 2500, 'https://images.unsplash.com/photo-1534215754734-18e55d13e346?w=100&h=100&fit=crop')">
-                            <i class="fas fa-shopping-bag"></i> Ajouter
-                        </button>
-                        <button class="btn-wishlist" onclick="toggleWishlist(this)"><i class="fas fa-heart"></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 4: Sandals Premium -->
-            <div class="product-card scroll-reveal">
-                <span class="product-badge">Promo</span>
-                <img src="https://images.unsplash.com/photo-1603487742131-4160ec999306?w=500&h=500&fit=crop" alt="Sandales Premium" class="product-image">
-                <div class="product-info">
-                    <p class="product-category">Chaussures</p>
-                    <h3 class="product-name">Sandales Premium Cuir</h3>
-                    <p class="product-price">1,500 HTG <span>2,000 HTG</span></p>
-                    <div class="product-actions">
-                        <button class="btn-add-cart" onclick="addToCart('Sandales Premium Cuir', 1500, 'https://images.unsplash.com/photo-1603487742131-4160ec999306?w=100&h=100&fit=crop')">
-                            <i class="fas fa-shopping-bag"></i> Ajouter
-                        </button>
-                        <button class="btn-wishlist" onclick="toggleWishlist(this)"><i class="fas fa-heart"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About -->
-    <section class="about-section" id="about">
-        <div class="about-container">
-            <div class="about-image scroll-reveal">
-                <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&h=500&fit=crop" alt="CHERI STYLE Boutique">
-            </div>
-            <div class="about-content scroll-reveal">
-                <p class="section-subtitle">Notre Histoire</p>
-                <h2>Le Style Haïtien,<br>Revisité avec Élégance</h2>
-                <p>CHERI STYLE est né de la passion pour la mode haïtienne contemporaine. Situé au cœur de Delmas 31, nous proposons des accessoires et chaussures qui allient qualité, style et prix accessible.</p>
-                <p>Chaque pièce est sélectionnée avec soin pour refléter l'élégance et la fierté de notre culture. Nous croyons que le style ne doit pas coûter cher.</p>
-                <div class="about-features">
-                    <div class="feature-item">
-                        <div class="feature-icon"><i class="fas fa-shipping-fast"></i></div>
-                        <div class="feature-text">
-                            <h4>Livraison Rapide</h4>
-                            <p>Delmas 31 et environs</p>
-                        </div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
-                        <div class="feature-text">
-                            <h4>Qualité Garantie</h4>
-                            <p>Produits soigneusement vérifiés</p>
-                        </div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon"><i class="fas fa-hand-holding-usd"></i></div>
-                        <div class="feature-text">
-                            <h4>Prix Justes</h4>
-                            <p>Meilleur rapport qualité-prix</p>
-                        </div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon"><i class="fas fa-headset"></i></div>
-                        <div class="feature-text">
-                            <h4>Service Client</h4>
-                            <p>Disponible 7j/7</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact -->
-    <section class="contact-section" id="contact">
-        <div class="section-header scroll-reveal">
-            <p class="section-subtitle">Contactez-Nous</p>
-            <h2 class="section-title">Restons en Contact</h2>
-        </div>
-        <div class="contact-grid">
-            <div class="contact-info scroll-reveal">
-                <h3>Informations de Contact</h3>
-                <p style="color: #666; margin-bottom: 2rem;">N'hésitez pas à nous contacter pour toute question ou commande spéciale. Nous sommes là pour vous aider!</p>
-
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <div>
-                        <h4>Adresse</h4>
-                        <p>Delmas 31, Haïti</p>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-phone"></i>
-                    <div>
-                        <h4>Téléphone</h4>
-                        <p>+509 3895-4747</p>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <i class="fab fa-whatsapp"></i>
-                    <div>
-                        <h4>WhatsApp</h4>
-                        <p>+509 3895-4747</p>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-clock"></i>
-                    <div>
-                        <h4>Horaires</h4>
-                        <p>Lun - Sam: 8h00 - 18h00</p>
-                    </div>
-                </div>
-            </div>
-            <div class="contact-form scroll-reveal">
-                <form onsubmit="handleSubmit(event)">
-                    <div class="form-group">
-                        <label>Nom Complet</label>
-                        <input type="text" placeholder="Votre nom" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Téléphone</label>
-                        <input type="tel" placeholder="+509 XXXX XXXX" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Message</label>
-                        <textarea placeholder="Votre message..." required></textarea>
-                    </div>
-                    <button type="submit" class="btn-submit">Envoyer le Message</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-container">
-            <div class="footer-brand">
-                <h3>CHERI <span>STYLE</span></h3>
-                <p>Votre destination mode à Delmas 31. Snapbacks, sandales et accessoires de qualité pour un style qui vous ressemble.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-whatsapp"></i></a>
-                    <a href="#"><i class="fab fa-tiktok"></i></a>
-                </div>
-            </div>
-            <div class="footer-links">
-                <h4>Liens Rapides</h4>
-                <ul>
-                    <li><a href="#home">Accueil</a></li>
-                    <li><a href="#products">Produits</a></li>
-                    <li><a href="#about">À Propos</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-links">
-                <h4>Produits</h4>
-                <ul>
-                    <li><a href="#">Snapbacks</a></li>
-                    <li><a href="#">Sandales</a></li>
-                    <li><a href="#">Nouveautés</a></li>
-                    <li><a href="#">Promotions</a></li>
-                </ul>
-            </div>
-            <div class="footer-links">
-                <h4>Aide</h4>
-                <ul>
-                    <li><a href="#">Livraison</a></li>
-                    <li><a href="#">Retours</a></li>
-                    <li><a href="#">FAQ</a></li>
-                    <li><a href="#">Politique</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2026 CHERI STYLE. Tous droits réservés. | Delmas 31, Haïti</p>
-        </div>
-    </footer>
-
-    <!-- Cart Sidebar -->
-    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart(event)"></div>
-    <div class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h3>Votre Panier</h3>
-            <button class="cart-close" onclick="toggleCart(event)"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="cart-items" id="cartItems">
-            <div class="cart-empty">
-                <i class="fas fa-shopping-bag"></i>
-                <p>Votre panier est vide</p>
-            </div>
-        </div>
-        <div class="cart-footer" id="cartFooter" style="display: none;">
-            <div class="cart-total">
-                <span>Total:</span>
-                <span id="cartTotal">0 HTG</span>
-            </div>
-            <button class="btn-checkout" onclick="checkout()">Commander via WhatsApp</button>
-        </div>
-    </div>
-
-    <!-- WhatsApp Float -->
-    <a href="https://wa.me/50938954747" class="whatsapp-float" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
-    <!-- Toast -->
-    <div class="toast" id="toast">
-        <i class="fas fa-check-circle"></i>
-        <span id="toastMessage">Produit ajouté au panier!</span>
-    </div>
-
-    <script>
-        // Cart functionality
-        let cart = [];
-
-        function addToCart(name, price, image) {
-            const existingItem = cart.find(item => item.name === name);
-            if (existingItem) {
-                existingItem.quantity++;
-            } else {
-                cart.push({ name, price, image, quantity: 1 });
-            }
-            updateCartUI();
-            showToast('Produit ajouté au panier!');
-        }
-
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCartUI();
-        }
-
-        function updateCartUI() {
-            const cartItems = document.getElementById('cartItems');
-            const cartCount = document.getElementById('cartCount');
-            const cartFooter = document.getElementById('cartFooter');
-            const cartTotal = document.getElementById('cartTotal');
-
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            cartCount.textContent = totalItems;
-
-            if (cart.length === 0) {
-                cartItems.innerHTML = `
-                    <div class="cart-empty">
-                        <i class="fas fa-shopping-bag"></i>
-                        <p>Votre panier est vide</p>
-                    </div>
-                `;
-                cartFooter.style.display = 'none';
-            } else {
-                cartItems.innerHTML = cart.map((item, index) => `
-                    <div class="cart-item">
-                        <img src="${item.image}" alt="${item.name}">
-                        <div class="cart-item-info">
-                            <h4>${item.name}</h4>
-                            <p class="cart-item-price">${item.price.toLocaleString()} HTG x ${item.quantity}</p>
-                        </div>
-                        <button class="cart-item-remove" onclick="removeFromCart(${index})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `).join('');
-                cartFooter.style.display = 'block';
-                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                cartTotal.textContent = total.toLocaleString() + ' HTG';
-            }
-        }
-
-        function toggleCart(event) {
-            event.preventDefault();
-            document.getElementById('cartOverlay').classList.toggle('active');
-            document.getElementById('cartSidebar').classList.toggle('active');
-        }
-
-        function checkout() {
-            if (cart.length === 0) return;
-            let message = 'Bonjour CHERI STYLE! Je voudrais commander:
-
-';
-            let total = 0;
-            cart.forEach(item => {
-                message += `- ${item.name} (${item.quantity}x) = ${(item.price * item.quantity).toLocaleString()} HTG
-`;
-                total += item.price * item.quantity;
-            });
-            message += `
+";let total=0;cart.forEach(item=>{message+=`- ${item.name} (${item.quantity}x) = ${(item.price*item.quantity).toLocaleString()} HTG
+`;total+=item.price*item.quantity});message+=`
 Total: ${total.toLocaleString()} HTG
 
-Merci!`;
-            const encodedMessage = encodeURIComponent(message);
-            window.open(`https://wa.me/50938954747?text=${encodedMessage}`, '_blank');
-        }
-
-        // Wishlist
-        function toggleWishlist(btn) {
-            btn.classList.toggle('active');
-            showToast(btn.classList.contains('active') ? 'Ajouté aux favoris!' : 'Retiré des favoris');
-        }
-
-        // Toast
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toastMessage');
-            toastMessage.textContent = message;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
-        }
-
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // Scroll reveal
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
-
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-
-        // Form submission
-        function handleSubmit(event) {
-            event.preventDefault();
-            showToast('Message envoyé avec succès!');
-            event.target.reset();
-        }
-    </script>
+Merci!`;const encodedMessage=encodeURIComponent(message);window.open(`https://wa.me/50934232552?text=${encodedMessage}`,"_blank")}
+function toggleWishlist(btn){btn.classList.toggle("active");showToast(btn.classList.contains("active")?"Ajoute aux favoris!":"Retire des favoris")}
+function showToast(message){const toast=document.getElementById("toast");const toastMessage=document.getElementById("toastMessage");toastMessage.textContent=message;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),3000)}
+function toggleMobileNav(){document.getElementById("mobileNav").classList.toggle("active")}
+function toggleFaq(btn){btn.classList.toggle("active");const answer=btn.nextElementSibling;answer.classList.toggle("active")}
+function handleSubmit(event){event.preventDefault();showToast("Message envoye avec succes!");event.target.reset()}
+function handleNewsletter(event){event.preventDefault();showToast("Inscription reussie!");event.target.reset()}
+function openSearch(event){event.preventDefault();showToast("Recherche en cours de developpement")}
+function scrollToTop(){window.scrollTo({top:0,behavior:"smooth"})}
+window.addEventListener("scroll",()=>{const header=document.getElementById("header");const scrollTop=document.getElementById("scrollTop");if(window.scrollY>50){header.classList.add("scrolled")}else{header.classList.remove("scrolled")}if(window.scrollY>500){scrollTop.classList.add("visible")}else{scrollTop.classList.remove("visible")}});
+const observerOptions={threshold:0.1,rootMargin:"0px 0px -50px 0px"};
+const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("visible")}})},observerOptions);
+document.querySelectorAll(".scroll-reveal").forEach(el=>observer.observe(el));
+document.querySelectorAll('a[href^="#"]').forEach(anchor=>{anchor.addEventListener("click",function(e){e.preventDefault();const target=document.querySelector(this.getAttribute("href"));if(target){target.scrollIntoView({behavior:"smooth",block:"start"})}})});
+window.addEventListener("load",()=>{setTimeout(()=>{document.getElementById("loader").classList.add("hidden")},1500)});
+</script>
 </body>
 </html>
